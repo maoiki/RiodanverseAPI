@@ -10,22 +10,11 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Usuario {
+public class Criatura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
-     private String nome;
-
-    @Column(nullable = false)
-    private String funcao;
-
-    // TODO: associar a entidade criatura
-    @Column(nullable = false)
-    private String criatura;
-
-    // TODO: associar a entidade acampamento
-    @Column
-    private String acampamento;
+    private String funcao; 
 }
