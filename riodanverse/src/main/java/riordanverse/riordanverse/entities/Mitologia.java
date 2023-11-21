@@ -17,4 +17,8 @@ public class Mitologia {
 
     @Column(nullable = false)
     private String nome;
+
+    //ASSOCIAR MITOLOGIA COM ACAMPAMENTO
+    @Column(nullable = false)
+    private String acampamento;
 }
