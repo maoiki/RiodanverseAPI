@@ -1,5 +1,6 @@
 package riordanverse.riordanverse.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +17,39 @@ public class MitologiaService {
      private MitologiaRepository mitologiaRepository;
 
      private void criarMitologia(String nome) {
-         Mitologia mitologia = new Mitologia();
-         mitologia.setNome(nome);
- 
-         mitologiaRepository.save(mitologia);
+        // Verifica se a mitologia com o nome já existe
+        Mitologia existente = mitologiaRepository.findByNome(nome);
+        if (existente != null) {
+            throw new IllegalStateException("Já existe uma mitologia com o nome: " + nome);
+        }
+
+        // Cria uma nova mitologia se não existir
+        Mitologia novaMitologia = new Mitologia();
+        novaMitologia.setNome(nome);
+        mitologiaRepository.save(novaMitologia);
      }
      
+
      @Transactional
      public void criarMitologiasIniciais() {
-        criarMitologia("greco-romana");
-        criarMitologia("nordica");
-        criarMitologia("egipcia");
+          if (mitologiaRepository.count() == 0) {
+               criarMitologia("greco-romana");
+               criarMitologia("nordica");
+               criarMitologia("egipcia");
+          }
     }
 
 
      public Mitologia getMitologia (Integer idMitologia){
           Optional<Mitologia> mitologia = mitologiaRepository.findById(idMitologia);
           return mitologia.get();
+     }
+
+     public Mitologia getMitologiaByNome(String nome) {
+          return mitologiaRepository.findByNome(nome);
+     }
+
+     public List<Mitologia> getAllMitologias() {
+          return mitologiaRepository.findAll();
      }
 }
