@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +20,8 @@ public class Acampamento {
     @Column(nullable = false)
     private String nome;
 
-    // TODO: associar a entidade mitologia
-    @Column(nullable = false)
-    private String mitologia;
+    // Um acampamento está associado a uma única mitologia
+    @ManyToOne
+    @JoinColumn(name = "mitologia_id")
+    private Mitologia mitologia;
 }

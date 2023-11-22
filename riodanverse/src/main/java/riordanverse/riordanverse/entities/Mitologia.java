@@ -1,10 +1,13 @@
 package riordanverse.riordanverse.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +21,11 @@ public class Mitologia {
     @Column(nullable = false)
     private String nome;
 
-    //ASSOCIAR MITOLOGIA COM ACAMPAMENTO
-    @Column(nullable = false)
-    private String acampamento;
+    // Uma mitologia está associada a diversos acampamentos
+    @OneToMany(mappedBy = "mitologia")
+    private List<Acampamento> acampamentos;
+
+    // Uma mitologia está associada a diversos livros
+    @OneToMany(mappedBy = "mitologia")
+    private List<Livro> livros;
 }

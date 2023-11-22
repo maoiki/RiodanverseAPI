@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +26,8 @@ public class Livro {
      @Column(nullable = false)
      private Integer lancamento;
 
-     @Column(nullable = false)
-     private String mitologia;
+     // Muitos livros podem estar associados a uma mitologia
+     @ManyToOne
+     @JoinColumn(name = "mitologia_id")
+     private Mitologia mitologia;
 }
