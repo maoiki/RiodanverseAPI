@@ -1,5 +1,9 @@
-// package riordanverse.riordanverse.repositories;
+package riordanverse.riordanverse.repositories;
 
-// public interface UsuarioRepository{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import riordanverse.riordanverse.entities.Usuario;
+
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     
-// }
+}
