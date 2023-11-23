@@ -1,5 +1,7 @@
 package riordanverse.riordanverse.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,5 +31,6 @@ public class Livro {
      // Muitos livros podem estar associados a uma mitologia
      @ManyToOne
      @JoinColumn(name = "mitologia_id")
+     @JsonBackReference
      private Mitologia mitologia;
 }

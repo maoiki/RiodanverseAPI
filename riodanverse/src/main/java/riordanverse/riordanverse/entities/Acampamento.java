@@ -1,5 +1,7 @@
 package riordanverse.riordanverse.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,5 +25,6 @@ public class Acampamento {
     // Um acampamento está associado a uma única mitologia
     @ManyToOne
     @JoinColumn(name = "mitologia_id")
+    @JsonBackReference
     private Mitologia mitologia;
 }
