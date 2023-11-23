@@ -1,5 +1,8 @@
 package riordanverse.riordanverse.services;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,9 +78,33 @@ public class LivroService {
           }
     }
 
+     public Livro getLivroById(Integer idLivro){
+          Optional<Livro> livro = livroRepository.findById(idLivro);
+          return livro.get();
+ }
+    
+     public Livro getLivroByNome(String nome) {
+          return livroRepository.findByNome(nome);
+     }
+  
+     public List<Livro> getLivrosByAno(Integer ano) {
+          return livroRepository.findByLancamento(ano);
+     }
+
+     public List<Livro> getLivrosByQuantidadePaginas(Integer quantidadePaginas) {
+          return livroRepository.findByLancamento(quantidadePaginas);
+     }
+
+     public List<Livro> getLivrosByMitologia(String mitologiaNome) {
+          Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
+          return livroRepository.findByMitologia(mitologia);
+      }
+
+     public List<Livro> getAllLivros() {
+        return livroRepository.findAll();
+    }
+
      public Livro salvar (Livro livro){
           return livroRepository.save(livro);
      }
-
-     
 }
