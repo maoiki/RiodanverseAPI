@@ -49,5 +49,17 @@ public class AcampamentoService {
     public List<Acampamento> getAllAcampamentos() {
         return acampamentoRepository.findAll();
     }
+
+    public Acampamento salvar (Acampamento acampamento){
+        return acampamentoRepository.save(acampamento);
+    }
+
+   public Acampamento atualizar(Acampamento acampamento){
+        return acampamentoRepository.save(acampamento);
+    }
+
+   public void remover(Integer idAcampamento){
+        acampamentoRepository.deleteById(idAcampamento);
+    }
     
 }

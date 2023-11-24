@@ -52,4 +52,17 @@ public class MitologiaService {
      public List<Mitologia> getAllMitologias() {
           return mitologiaRepository.findAll();
      }
+
+     public Mitologia salvar (Mitologia mitologia){
+          return mitologiaRepository.save(mitologia);
+     }
+
+     public Mitologia atualizar(Mitologia mitologia){
+          return mitologiaRepository.save(mitologia);
+     }
+
+     public void remover(Integer idMitologia){
+          mitologiaRepository.deleteById(idMitologia);
+     }
+     
 }
