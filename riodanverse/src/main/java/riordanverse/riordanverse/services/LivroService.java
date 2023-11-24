@@ -87,12 +87,12 @@ public class LivroService {
           return livroRepository.findByNome(nome);
      }
   
-     public List<Livro> getLivrosByAno(Integer ano) {
+     public List<Livro> getLivrosByLancamento(Integer ano) {
           return livroRepository.findByLancamento(ano);
      }
 
      public List<Livro> getLivrosByQuantidadePaginas(Integer quantidadePaginas) {
-          return livroRepository.findByLancamento(quantidadePaginas);
+          return livroRepository.findByQuantidadePaginas(quantidadePaginas);
      }
 
      public List<Livro> getLivrosByMitologia(String mitologiaNome) {
@@ -106,5 +106,13 @@ public class LivroService {
 
      public Livro salvar (Livro livro){
           return livroRepository.save(livro);
+     }
+
+     public Livro atualizar (Livro livro){
+          return livroRepository.save(livro);
+     }
+
+     public void remover (Integer idLivro){
+          livroRepository.deleteById(idLivro);
      }
 }
