@@ -19,19 +19,13 @@ public class AcampamentoService {
     @Autowired
     private MitologiaService mitologiaService;
     
-    @Transactional
-    public void criarAcampamentosIniciais(){
-        // TODO: criar acampamento da mitologia egipcia e nordica
-        
-        criarAcampamento("meio-sangue", "greco-romana");
-        criarAcampamento("jupiter", "greco-romana");
-    }
-
-
     private void criarAcampamento(String nome, String mitologiaNome) {
-        // TODO: impedir cadastro caso já exista esse acampamento, parecido como
-        // ja ocorre no cadastro de mitologia
-        
+       
+        Acampamento existente = acampamentoRepository.findByNome(nome);
+        if(existente != null){
+            throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
+        }
+
         Acampamento acampamento = new Acampamento();
         acampamento.setNome(nome);
 
@@ -39,6 +33,17 @@ public class AcampamentoService {
         acampamento.setMitologia(mitologia);
 
        acampamentoRepository.save(acampamento);
+    }
+
+    @Transactional
+    public void criarAcampamentosIniciais(){
+       
+        if(acampamentoRepository.count() == 0){
+            criarAcampamento("meio-sangue", "greco-romana");
+            criarAcampamento("jupiter", "greco-romana");
+            criarAcampamento("casa da vida", "egipcia");
+            criarAcampamento("hotel vahalla", "nordica");
+        }
     }
 
     public List<Acampamento> getAllAcampamentos() {
