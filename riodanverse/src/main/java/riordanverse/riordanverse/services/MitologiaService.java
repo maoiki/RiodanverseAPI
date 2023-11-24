@@ -34,16 +34,16 @@ public class MitologiaService {
      public void criarMitologiasIniciais() {
           if (mitologiaRepository.count() == 0) {
                criarMitologia("greco-romana");
-               criarMitologia("nordica");
                criarMitologia("egipcia");
+               criarMitologia("nordica");
           }
-    }
-
-
-     public Mitologia getMitologia (Integer idMitologia){
-          Optional<Mitologia> mitologia = mitologiaRepository.findById(idMitologia);
-          return mitologia.get();
      }
+     
+          public Mitologia getMitologia (Integer idMitologia){
+               Optional<Mitologia> mitologia = mitologiaRepository.findById(idMitologia);
+               return mitologia.get();
+          }
+     
 
      public Mitologia getMitologiaByNome(String nome) {
           return mitologiaRepository.findByNome(nome);

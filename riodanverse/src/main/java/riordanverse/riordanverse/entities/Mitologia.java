@@ -35,4 +35,8 @@ public class Mitologia {
     @OneToMany(mappedBy = "mitologia")
     @JsonManagedReference
     private List<Livro> livros;
+
+    @OneToMany(mappedBy = "mitologia")
+    @JsonManagedReference
+    private List<Criatura> criaturas;
 }
