@@ -1,5 +1,7 @@
 package riordanverse.riordanverse.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +47,31 @@ public class CriaturaService {
 
 
           }
+     }
+
+     public List<Criatura> getAllCriaturas() {
+          return criaturaRepository.findAll();
+     }
+
+     public Criatura getCriaturaByNome(String nome){
+          return criaturaRepository.findByNome(nome);
+     }
+
+     public List<Criatura> getCriaturasByMitologia(String mitologiaNome){
+          Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
+          return criaturaRepository.findByMitologia(mitologia);
+     }
+
+     public Criatura salvar (Criatura criatura){
+          return criaturaRepository.save(criatura);
+     }
+
+     public Criatura atualizar(Criatura criatura){
+          return criaturaRepository.save(criatura);
+     }
+
+     public void remover(Integer idCriatura){
+          criaturaRepository.deleteById(idCriatura);
      }
 
 }
