@@ -20,7 +20,7 @@ public class Criatura {
     private Integer id;
 
     @Column(nullable = false)
-    private String funcao; 
+    private String nome; 
 
     // Muitas criaturas podem estar associadas a uma mitologia
     @ManyToOne
