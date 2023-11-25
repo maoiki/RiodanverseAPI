@@ -1,6 +1,7 @@
 package riordanverse.riordanverse.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,8 +47,22 @@ public class AcampamentoService {
         }
     }
 
+    public Acampamento getAcampamentoById(Integer idAcamp){
+        Optional<Acampamento> acampamento = acampamentoRepository.findById(idAcamp);
+        return acampamento.get();
+    }
+
     public List<Acampamento> getAllAcampamentos() {
         return acampamentoRepository.findAll();
+    }
+
+    public Acampamento getAcampamentoByNome(String nome){
+        return acampamentoRepository.findByNome(nome);
+    }
+
+    public List<Acampamento> getAcampamentosByMitologia(String mitologiaNome){
+        Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
+        return acampamentoRepository.findByMitologia(mitologia);
     }
 
     public Acampamento salvar (Acampamento acampamento){
