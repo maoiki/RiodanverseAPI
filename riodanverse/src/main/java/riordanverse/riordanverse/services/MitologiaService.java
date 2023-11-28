@@ -39,11 +39,12 @@ public class MitologiaService {
           }
      }
      
-          public Mitologia getMitologia (Integer idMitologia){
+          public Mitologia getMitologiaById (Integer idMitologia){
                Optional<Mitologia> mitologia = mitologiaRepository.findById(idMitologia);
                return mitologia.get();
           }
      
+
 
      public Mitologia getMitologiaByNome(String nome) {
           return mitologiaRepository.findByNome(nome);
