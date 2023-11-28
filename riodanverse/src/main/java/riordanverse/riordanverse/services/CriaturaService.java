@@ -1,6 +1,7 @@
 package riordanverse.riordanverse.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,11 @@ public class CriaturaService {
 
      public List<Criatura> getAllCriaturas() {
           return criaturaRepository.findAll();
+     }
+
+     public Criatura getCriaturaById(Integer idCriatura){
+          Optional<Criatura> criatura = criaturaRepository.findById(idCriatura);
+          return criatura.get();
      }
 
      public Criatura getCriaturaByNome(String nome){
