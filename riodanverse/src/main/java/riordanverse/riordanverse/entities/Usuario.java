@@ -1,10 +1,15 @@
 package riordanverse.riordanverse.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,15 +22,20 @@ public class Usuario {
 
     @Column(nullable = false)
      private String nome;
+     
+    @Column(nullable = false)
+    private String senha;
 
     @Column(nullable = false)
     private String funcao;
 
-    // TODO: associar a entidade criatura
-    @Column(nullable = false)
-    private String criatura;
+    @ManyToOne
+    @JoinColumn(name = "criatura_id")
+    @JsonIgnore
+    private Criatura criatura;
 
-    // TODO: associar a entidade acampamento
-    @Column
-    private String acampamento;
+    @ManyToOne
+    @JoinColumn(name = "acampamento_id")
+    @JsonIgnore
+    private Acampamento acampamento;
 }
