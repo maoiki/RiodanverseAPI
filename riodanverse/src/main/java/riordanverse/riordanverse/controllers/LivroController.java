@@ -3,6 +3,7 @@ package riordanverse.riordanverse.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -89,6 +90,7 @@ public class LivroController {
      }
 
      @PostMapping
+     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
      public String cadastrarLivro(@RequestBody Livro livro){
           String nome = livro.getNome();
           Livro existente = livroService.getLivroByNome(nome);
@@ -103,6 +105,7 @@ public class LivroController {
      }
 
      @PutMapping
+     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
      public String atualizarLivro(@RequestBody Livro livro){
           String nome = livro.getNome();
           Livro existente = livroService.getLivroByNome(nome);
@@ -117,6 +120,7 @@ public class LivroController {
      }
 
      @DeleteMapping("/id/{idLivro}")
+     @Secured(value = {"ROLE_ADMIN"}) 
      public String removerLivro(@PathVariable Integer idLivro){
           Livro existente = livroService.getLivroById(idLivro);
 
