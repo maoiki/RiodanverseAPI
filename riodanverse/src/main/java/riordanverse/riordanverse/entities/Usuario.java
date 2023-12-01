@@ -21,7 +21,7 @@ public class Usuario {
     private Integer id;
 
     @Column(nullable = false)
-     private String nome;
+     private String login;
      
     @Column(nullable = false)
     private String senha;

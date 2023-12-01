@@ -14,6 +14,10 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    public Usuario getUsuarioByLogin(String login){
+     return usuarioRepository.findByLogin(login);
+    }
+
     public List<Usuario> getAllUsuarios(){
         return usuarioRepository.findAll();
     }

@@ -1,5 +1,7 @@
-// package riordanverse.riordanverse.enums;
+package riordanverse.riordanverse.enums;
 
-// public enum Papel {
-    
-// }
+public enum Papel {
+    ROLE_CAMPISTA,
+    ROLE_FUNCIONARIO,
+    ROLE_ADMIN
+}
