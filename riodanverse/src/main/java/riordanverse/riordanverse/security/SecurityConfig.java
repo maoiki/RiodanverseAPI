@@ -38,7 +38,10 @@ public class SecurityConfig {
         .authorizeHttpRequests(
             authorizeConfig -> {
               authorizeConfig.requestMatchers(HttpMethod.POST, "/login").permitAll();
-              authorizeConfig.requestMatchers(HttpMethod.GET, "/status").permitAll();
+              authorizeConfig.requestMatchers(HttpMethod.GET, "/mitologia/**").permitAll();
+              authorizeConfig.requestMatchers(HttpMethod.GET, "/livro/**").permitAll();
+              authorizeConfig.requestMatchers(HttpMethod.GET, "/acamp/**").permitAll();
+              authorizeConfig.requestMatchers(HttpMethod.GET, "/criatura/**").permitAll();
               authorizeConfig.anyRequest().authenticated();
             })
         .addFilter(new JWTAuthenticationFilter(configuration.getAuthenticationManager()))
