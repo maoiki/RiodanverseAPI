@@ -3,6 +3,7 @@ package riordanverse.riordanverse.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,7 @@ public class MitologiaController {
      }
 
      @PostMapping
+     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
      public String cadastrarMitologia(@RequestBody Mitologia mitologia){
           String nome = mitologia.getNome();
           Mitologia existente = mitologiaService.getMitologiaByNome(nome);
@@ -56,6 +58,7 @@ public class MitologiaController {
      }
 
      @PutMapping
+     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
      public String atualizarMitologia(@RequestBody Mitologia mitologia){
           String nome = mitologia.getNome();
           Mitologia existente = mitologiaService.getMitologiaByNome(nome);
@@ -70,6 +73,7 @@ public class MitologiaController {
      }
 
      @DeleteMapping("/id/{idMito}")
+     @Secured(value = {"ROLE_ADMIN"})
      public String removerMito(@PathVariable Integer idMito){
           Mitologia existente = mitologiaService.getMitologiaById(idMito);
 

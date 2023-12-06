@@ -3,6 +3,7 @@ package riordanverse.riordanverse.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ public class CriaturaController {
      }
 
      @PostMapping
+     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
      public String cadastrarCriatura(@RequestBody Criatura criatura){
           String nome = criatura.getNome();
           Criatura existente = criaturaService.getCriaturaByNome(nome);
@@ -70,6 +72,7 @@ public class CriaturaController {
      }
 
      @PutMapping
+     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
      public String atualizarCriatura(@RequestBody Criatura criatura){
           String nome = criatura.getNome();
           Criatura existente = criaturaService.getCriaturaByNome(nome);
@@ -84,6 +87,7 @@ public class CriaturaController {
      }
 
      @DeleteMapping("/id/{idCriatura}")
+     @Secured(value = {"ROLE_ADMIN"})
      public String removerCriatura(@PathVariable Integer idCriatura){
           Criatura existente = criaturaService.getCriaturaById(idCriatura);
 

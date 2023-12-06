@@ -3,6 +3,7 @@ package riordanverse.riordanverse.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ public class AcampamentoController {
      }
 
      @PostMapping
+     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
      public String cadastrarAcampamento(@RequestBody Acampamento acampamento){
           String nome = acampamento.getNome();
           Acampamento existente = acampamentoService.getAcampamentoByNome(nome);
@@ -71,6 +73,7 @@ public class AcampamentoController {
      }
 
      @PutMapping
+     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
      public String atualizarAcampamento(@RequestBody Acampamento acampamento){
           String nome = acampamento.getNome();
           Acampamento existente = acampamentoService.getAcampamentoByNome(nome);
@@ -85,6 +88,7 @@ public class AcampamentoController {
      }
 
      @DeleteMapping("/id/{idAcamp}")
+     @Secured(value = {"ROLE_ADMIN"})
      public String removerAcamp(@PathVariable Integer idAcamp){
           Acampamento existente = acampamentoService.getAcampamentoById(idAcamp);
 
