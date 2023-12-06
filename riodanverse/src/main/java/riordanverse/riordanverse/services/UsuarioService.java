@@ -140,7 +140,36 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
      }
 
-	
+	public Usuario atualizarSelf(Usuario usuario, Authentication authentication){
+		Boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+
+		Usuario usuarioAutenticado = getUsuarioByAuthentication(authentication);
+		Usuario usuarioExistente = getUsuarioByLogin(usuario.getLogin());
+		Boolean isMesmoUsuario = (usuarioAutenticado == usuarioExistente);
+		Boolean isFuncaoDiferente = usuario.getFuncao() != usuarioAutenticado.getFuncao();
+
+		String senha = usuario.getSenha();
+		Boolean isSenhaValida = validarSenha(senha);
+
+		if (usuarioExistente != null && !isMesmoUsuario)  {
+			throw new RuntimeException("Já existe um usuário com este login.");
+    	}
+		
+		if (!isAdmin && isFuncaoDiferente) {
+			throw new AccessDeniedException("Você não tem permissão para atualizar sua própria função.");
+    	}
+		
+		if(isSenhaValida){
+			String senhaCriptografada = bCryptPasswordEncoder.encode(senha);
+			usuario.setSenha(senhaCriptografada);
+		} else {
+			throw new RuntimeException("A senha deve possuir entre 6 e 20 caracteres.");
+		}
+
+		usuario.setId(usuarioAutenticado.getId());
+
+		return usuarioRepository.save(usuario);
+	}
     
 
 	public void remover(Integer idUsuario, Authentication authentication){
@@ -152,4 +181,13 @@ public class UsuarioService {
 		usuarioRepository.deleteById(idUsuario);
 	}
     
+	public void removerSelf(Authentication authentication){
+		Usuario usuarioAutenticado = getUsuarioByAuthentication(authentication);
+		
+		if (authentication == null || usuarioAutenticado == null ) {
+			throw new AccessDeniedException("Você não tem permissão para realizar essa ação.");
+		}
+
+		usuarioRepository.deleteById(usuarioAutenticado.getId());
+	}
 }

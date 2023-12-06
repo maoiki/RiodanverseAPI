@@ -109,7 +109,27 @@ public class UsuarioController {
         }
     }
 
-   
+    @PutMapping("/perfil")
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN","ROLE_CAMPISTA"})
+    public String atualizarUsuarioPerfil(@RequestBody Usuario usuario, Authentication authentication){
+        try {
+             usuarioService.atualizarSelf(usuario, authentication);
+            return "Seu usuário foi atualizado com sucesso!";
+        } catch (RuntimeException e) {
+            return "Erro ao atualizar seu usuário: " + e.getMessage();
+        }
+    }
+
+    @DeleteMapping("/perfil")
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN","ROLE_CAMPISTA"})
+    public String removerUserSelf(Authentication authentication){
+        try {
+            usuarioService.removerSelf(authentication);
+            return "Seu usuário foi removido com sucesso!";
+        } catch (RuntimeException e) {
+            return "Erro ao deletar seu usuário: " + e.getMessage();
+        }
+    }
 
     @DeleteMapping("/id/{idUser}")
     @Secured(value = {"ROLE_ADMIN"})
