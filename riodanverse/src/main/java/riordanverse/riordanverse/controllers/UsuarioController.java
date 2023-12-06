@@ -3,6 +3,7 @@ package riordanverse.riordanverse.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import riordanverse.riordanverse.entities.Usuario;
 import riordanverse.riordanverse.services.UsuarioService;
@@ -67,6 +69,17 @@ public class UsuarioController {
         }
 
         return usuarios;
+    }
+
+    @GetMapping("/perfil")
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN","ROLE_CAMPISTA"})
+    public Usuario getUsuarioPerfil(Authentication authentication){
+        try {
+            Usuario usuario = usuarioService.getUsuarioByAuthentication(authentication);
+            return usuario;
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter perfil do usuário", e);
+        }
     }
 
 

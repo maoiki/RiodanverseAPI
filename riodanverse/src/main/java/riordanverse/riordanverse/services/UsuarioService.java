@@ -66,6 +66,15 @@ public class UsuarioService {
           return usuarioRepository.findByAcampamento(acamp);
     }
 
+	public Usuario getUsuarioByAuthentication (Authentication authentication){
+		Usuario usuarioAutenticado = getUsuarioByLogin(authentication.getName());
+
+		if (authentication == null || usuarioAutenticado == null ) {
+			throw new AccessDeniedException("Você não tem permissão para realizar essa ação");
+		}
+		return usuarioAutenticado;
+	}
+
     public Usuario salvar (Usuario usuario, Authentication authentication) throws RuntimeException {
     	String login = usuario.getLogin();
     	Usuario existente = usuarioRepository.findByLogin(login);
