@@ -19,11 +19,6 @@ import riordanverse.riordanverse.repositories.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-
-	// REGEX simples para ter entre 6 e 20 digitos de senha
-	private static final String PASSWORD_REGEX = "^.{6,20}$";
-    private static final Pattern pattern = Pattern.compile(PASSWORD_REGEX);
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -36,7 +31,14 @@ public class UsuarioService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	/**
+	 * Verifica se a senha contém entre 6 e 20 caracteres
+	 * @param senha A senha a ser validada
+	 * @return {@code true} se a senha atender ao padrão
+	 */
 	public boolean validarSenha(String senha){
+		String PASSWORD_REGEX = "^.{6,20}$";
+    	Pattern pattern = Pattern.compile(PASSWORD_REGEX);
 		Matcher matcher = pattern.matcher(senha);
 		return matcher.matches();
 	}
@@ -74,20 +76,20 @@ public class UsuarioService {
 		
 		Funcao funcao = usuario.getFuncao();
 		Boolean isFuncaoRestrita = (funcao == Funcao.ROLE_FUNCIONARIO) || (funcao == Funcao.ROLE_ADMIN);
-		
+		Boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+
 		// Lança erro se não está autenticado ou se quer cadastrar uma função restrita sem ser admin
-		if (authentication == null ||
-		!authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))  && 
-		isFuncaoRestrita) {
+		if (authentication == null || (!isAdmin && isFuncaoRestrita) ) {
 			throw new AccessDeniedException("Você não tem permissão para cadastrar um usuário com a função " + funcao.name());
 		}
 
-		String senhaNormal = usuario.getSenha();
-		String senhaCriptografada = bCryptPasswordEncoder.encode(senhaNormal);
-		usuario.setSenha(senhaCriptografada);
+		String senha = usuario.getSenha();
+		Boolean isSenhaValida = validarSenha(senha);
 		
-		Matcher matcher = pattern.matcher(senhaNormal);
-		if (!matcher.matches()){
+		if(isSenhaValida){
+			String senhaCriptografada = bCryptPasswordEncoder.encode(senha);
+			usuario.setSenha(senhaCriptografada);
+		} else {
 			throw new RuntimeException("A senha deve possuir entre 6 e 20 caracteres.");
 		}
 		
