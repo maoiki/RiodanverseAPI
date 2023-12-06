@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ public class UsuarioController {
     UsuarioService usuarioService;
 
     @GetMapping("/all")
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
     public List<Usuario> getAllUsuarios(){
         List <Usuario> usuarios = usuarioService.getAllUsuarios();
         return usuarios;
@@ -69,19 +71,16 @@ public class UsuarioController {
 
 
     @PostMapping
-    public String cadastrarUsuario(@RequestBody Usuario usuario){
-        String login = usuario.getLogin();
-        Usuario existente = usuarioService.getUsuarioByLogin(login);
-
-        if(existente != null){
-            throw new IllegalStateException("Já existe um usuario com o login: " + login); 
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
+    public String cadastrarUsuario(@RequestBody Usuario usuario,  Authentication authentication){
+        try {
+            usuarioService.salvar(usuario, authentication);
+    
+            String login = usuario.getLogin();
+            return "Usuario " + login + " cadastrado com sucesso!";
+        } catch (RuntimeException e) {
+            return "Erro ao cadastrar usuário: " + e.getMessage();
         }
-
-        usuarioService.salvar(usuario);
-
-        String feedback = "Usuario "+login+" cadastrado com sucesso!";
-        return feedback;
-
     }
 
     @PutMapping

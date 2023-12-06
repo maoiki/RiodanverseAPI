@@ -2,17 +2,27 @@ package riordanverse.riordanverse.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import riordanverse.riordanverse.entities.Acampamento;
 import riordanverse.riordanverse.entities.Criatura;
 import riordanverse.riordanverse.entities.Usuario;
+import riordanverse.riordanverse.enums.Funcao;
 import riordanverse.riordanverse.repositories.UsuarioRepository;
 
 @Service
 public class UsuarioService {
+
+	// REGEX simples para ter entre 6 e 20 digitos de senha
+	private static final String PASSWORD_REGEX = "^.{6,20}$";
+    private static final Pattern pattern = Pattern.compile(PASSWORD_REGEX);
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -22,6 +32,9 @@ public class UsuarioService {
 
     @Autowired
     private AcampamentoService acampamentoService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     public Usuario getUsuarioByLogin(String login){
@@ -47,8 +60,34 @@ public class UsuarioService {
           return usuarioRepository.findByAcampamento(acamp);
     }
 
-    public Usuario salvar (Usuario usuario){
-          return usuarioRepository.save(usuario);
+    public Usuario salvar (Usuario usuario, Authentication authentication) throws RuntimeException {
+    	String login = usuario.getLogin();
+    	Usuario existente = usuarioRepository.findByLogin(login);
+
+		if(existente != null){
+			throw new RuntimeException("Já existe um usuario com o login: " + login); 
+		}
+		
+		Funcao funcao = usuario.getFuncao();
+		Boolean isFuncaoRestrita = (funcao == Funcao.ROLE_FUNCIONARIO) || (funcao == Funcao.ROLE_ADMIN);
+		
+		// Lança erro se não está autenticado ou se quer cadastrar uma função restrita sem ser admin
+		if (authentication == null ||
+		!authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))  && 
+		isFuncaoRestrita) {
+			throw new AccessDeniedException("Você não tem permissão para cadastrar um usuário com a função " + funcao.name());
+		}
+
+		String senhaNormal = usuario.getSenha();
+		String senhaCriptografada = bCryptPasswordEncoder.encode(senhaNormal);
+		usuario.setSenha(senhaCriptografada);
+		
+		Matcher matcher = pattern.matcher(senhaNormal);
+		if (!matcher.matches()){
+			throw new RuntimeException("A senha deve possuir entre 6 e 20 caracteres.");
+		}
+		
+        return usuarioRepository.save(usuario);
      }
 
      public Usuario atualizar(Usuario usuario){
