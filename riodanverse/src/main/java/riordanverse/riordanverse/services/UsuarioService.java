@@ -105,16 +105,15 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
      }
 
-     public Usuario atualizar(Usuario usuario, Authentication authentication){
-		Boolean isCampista = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_CAMPISTA"));
+    public Usuario atualizar(Usuario usuario, Authentication authentication){
 		Boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
 
 		Funcao funcao = usuario.getFuncao();
 		Boolean isFuncaoRestrita = (funcao == Funcao.ROLE_FUNCIONARIO) || (funcao == Funcao.ROLE_ADMIN);
 		
-		Usuario usuarioAutenticado = getUsuarioByLogin(authentication.getName());
-		Usuario usuarioExistente = getUsuarioByLogin(usuario.getLogin());
-		Boolean isMesmoUsuario = (usuarioAutenticado == usuarioExistente);
+		Usuario usuarioId = getUsuarioById(usuario.getId());
+		Usuario usuarioLogin = getUsuarioByLogin(usuario.getLogin());
+		Boolean isMesmoUsuario = (usuarioId == usuarioLogin);
 
 		String senha = usuario.getSenha();
 		Boolean isSenhaValida = validarSenha(senha);
@@ -123,11 +122,7 @@ public class UsuarioService {
 			throw new RuntimeException("É necessário informar o id do usuário a ser atualizado.");
 		}
 
-		if (authentication == null || (isCampista && !isMesmoUsuario) ) {
-        	throw new AccessDeniedException("Você não tem permissão para atualizar este usuário.");
-    	}
-
-		if (usuarioExistente != null && !isMesmoUsuario)  {
+		if (usuarioLogin != null && !isMesmoUsuario)  {
         	throw new RuntimeException("Já existe um usuário com este login.");
     	}
 

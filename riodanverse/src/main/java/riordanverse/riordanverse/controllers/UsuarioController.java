@@ -97,7 +97,7 @@ public class UsuarioController {
     }
 
     @PutMapping
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN","ROLE_CAMPISTA"})
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
     public String atualizarUsuario(@RequestBody Usuario usuario,  Authentication authentication){
         try {
             usuarioService.atualizar(usuario, authentication);
