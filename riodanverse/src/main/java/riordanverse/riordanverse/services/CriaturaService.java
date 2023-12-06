@@ -41,12 +41,17 @@ public class CriaturaService {
      @Transactional
      public void criarCriaturasIniciais(){
           if(criaturaRepository.count()==0){
-               //Greco-romana
                criarCriatura("deus greco-romano", "greco-romana");
                criarCriatura("semideus", "greco-romana");
-               criarCriatura("medusa", "greco-romana");
+               criarCriatura("sátiro", "greco-romana");
+               
+               criarCriatura("Serpopardo", "egipcia");
+               criarCriatura("Tjesu Heru", "egipcia");
+               criarCriatura("Criosfinge", "egipcia");
 
-
+               criarCriatura("Jörmungandr", "nordica");
+               criarCriatura("Draugr", "nordica");
+               criarCriatura("Troll", "nordica");
           }
      }
 
