@@ -43,6 +43,17 @@ public class AcampamentoController {
           return acampamentos;
      }
 
+     @GetMapping("/id/{idAcamp}")
+     public Acampamento getAcampById (@PathVariable Integer idAcamp){
+          Acampamento acamp = acampamentoService.getAcampamentoById(idAcamp);
+
+          if(acamp == null){
+               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+          }
+
+          return acamp;
+     }
+
      @PostMapping
      public String cadastrarAcampamento(@RequestBody Acampamento acampamento){
           String nome = acampamento.getNome();
