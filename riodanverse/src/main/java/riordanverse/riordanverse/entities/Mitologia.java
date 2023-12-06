@@ -2,7 +2,7 @@ package riordanverse.riordanverse.entities;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,20 +23,17 @@ public class Mitologia {
     @Column(nullable = false)
     private String nome;
 
-    // OBS: esse @JsonManagedReference em conjunto com o @JsonBackReference dos "filhos"
-    // impede de ficar fazendo referencias ciclicas, que estavam gerando erros
-
     // Uma mitologia está associada a diversos acampamentos
     @OneToMany(mappedBy = "mitologia")
-    @JsonManagedReference
+    @JsonIgnore
     private List<Acampamento> acampamentos;
 
     // Uma mitologia está associada a diversos livros
     @OneToMany(mappedBy = "mitologia")
-    @JsonManagedReference
+    @JsonIgnore
     private List<Livro> livros;
 
     @OneToMany(mappedBy = "mitologia")
-    @JsonManagedReference
+    @JsonIgnore
     private List<Criatura> criaturas;
 }
