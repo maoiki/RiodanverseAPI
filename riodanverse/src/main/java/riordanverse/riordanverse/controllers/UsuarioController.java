@@ -3,6 +3,7 @@ package riordanverse.riordanverse.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,13 +29,22 @@ public class UsuarioController {
         return usuarios;
     }
 
+    @GetMapping("/id/{idUsuario}")
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
+    public Usuario getUsuarioById(@PathVariable Integer idUsuario){
+        Usuario usuario = usuarioService.getUsuarioById(idUsuario);
+        return usuario;
+    }
+
     @GetMapping("/login/{nomeLogin}")
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
     public Usuario getUsuarioByLogin(@PathVariable String nomeLogin){
         Usuario usuario = usuarioService.getUsuarioByLogin(nomeLogin);
         return usuario;
     }
 
     @GetMapping("/criatura/{nomeCriatura}")
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
     public List<Usuario> getUsuarioByCriatura(@PathVariable String nomeCriatura){
         List<Usuario> usuarios = usuarioService.getUsuarioByCriatura(nomeCriatura);
 
@@ -46,6 +56,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/acamp/{acampNome}")
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
     public List<Usuario> getUsuarioByAcampamento(@PathVariable String acampNome){
         List<Usuario> usuarios = usuarioService.getUsuarioByAcampamento(acampNome);
         
