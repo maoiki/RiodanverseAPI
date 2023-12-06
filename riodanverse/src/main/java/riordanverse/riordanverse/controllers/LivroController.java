@@ -92,16 +92,14 @@ public class LivroController {
      @PostMapping
      @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
      public String cadastrarLivro(@RequestBody Livro livro){
-          String nome = livro.getNome();
-          Livro existente = livroService.getLivroByNome(nome);
+          try{
+               livroService.salvar(livro);
 
-          if (existente != null) {
-               throw new IllegalStateException("Já existe um livro com o nome: " + nome);
-          }
-          
-          livroService.salvar(livro);
-          String feedback = "Livro " + nome +" cadastrado com sucesso!";
-          return feedback;
+               String nome = livro.getNome();
+               return "Livro " + nome + " cadastrado com sucesso!";
+          }catch (RuntimeException e) {
+               return "Erro ao cadastrar livro: " + e.getMessage();
+           }
      }
 
      @PutMapping

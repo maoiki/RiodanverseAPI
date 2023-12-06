@@ -20,8 +20,6 @@ public class LivroService {
      @Autowired
      private MitologiaService mitologiaService;
 
-     // public Livro getLivroById(Integer)
-
      private void criarLivro(String nome, Integer quantidadePaginas, Integer lancamento, String mitologiaNome) {
           // Verifica se já existe um livro com esse nome
           Livro existente = livroRepository.findByNome(nome);
@@ -105,6 +103,14 @@ public class LivroService {
     }
 
      public Livro salvar (Livro livro){
+          String titulo = livro.getNome();
+          Livro existente = livroRepository.findByNome(titulo);
+
+          if(existente != null){
+               throw new RuntimeException("Já existe um livro com o titulo: " + titulo); 
+          }
+
+          
           return livroRepository.save(livro);
      }
 
