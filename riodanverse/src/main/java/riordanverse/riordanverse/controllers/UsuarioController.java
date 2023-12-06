@@ -84,18 +84,16 @@ public class UsuarioController {
     }
 
     @PutMapping
-    public String atualizarUsuario(@RequestBody Usuario usuario){
-        String login = usuario.getLogin();
-        Usuario existente = usuarioService.getUsuarioByLogin(login);
-
-        if(existente != null){
-            throw new IllegalStateException("Já existe um usuario com o login: " + login); 
+    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN","ROLE_CAMPISTA"})
+    public String atualizarUsuario(@RequestBody Usuario usuario,  Authentication authentication){
+        try {
+            usuarioService.atualizar(usuario, authentication);
+    
+            String login = usuario.getLogin();
+            return "Usuario " + login + " atualizado com sucesso!";
+        } catch (RuntimeException e) {
+            return "Erro ao atualizar usuário: " + e.getMessage();
         }
-
-         usuarioService.salvar(usuario);
-
-        String feedback = "Usuario "+login+" cadastrado com sucesso!";
-        return feedback;
     }
 
     @DeleteMapping("/id/{idUser}")

@@ -36,6 +36,10 @@ public class UsuarioService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	public boolean validarSenha(String senha){
+		Matcher matcher = pattern.matcher(senha);
+		return matcher.matches();
+	}
 
     public Usuario getUsuarioByLogin(String login){
      return usuarioRepository.findByLogin(login);
@@ -90,8 +94,44 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
      }
 
-     public Usuario atualizar(Usuario usuario){
-          return usuarioRepository.save(usuario);
+     public Usuario atualizar(Usuario usuario, Authentication authentication){
+		Boolean isCampista = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_CAMPISTA"));
+		Boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+
+		Funcao funcao = usuario.getFuncao();
+		Boolean isFuncaoRestrita = (funcao == Funcao.ROLE_FUNCIONARIO) || (funcao == Funcao.ROLE_ADMIN);
+		
+		Usuario usuarioAutenticado = getUsuarioByLogin(authentication.getName());
+		Usuario usuarioExistente = getUsuarioByLogin(usuario.getLogin());
+		Boolean isMesmoUsuario = (usuarioAutenticado == usuarioExistente);
+
+		String senha = usuario.getSenha();
+		Boolean isSenhaValida = validarSenha(senha);
+
+		if (usuario.getId() == null){
+			throw new RuntimeException("É necessário informar o id do usuário a ser atualizado.");
+		}
+
+		if (authentication == null || (isCampista && !isMesmoUsuario) ) {
+        	throw new AccessDeniedException("Você não tem permissão para atualizar este usuário.");
+    	}
+
+		if (usuarioExistente != null && !isMesmoUsuario)  {
+        	throw new RuntimeException("Já existe um usuário com este login.");
+    	}
+
+		if (!isAdmin && isFuncaoRestrita) {
+        	throw new AccessDeniedException("Você não tem permissão para atualizar a função deste usuário.");
+    	}
+		
+		if(isSenhaValida){
+			String senhaCriptografada = bCryptPasswordEncoder.encode(senha);
+			usuario.setSenha(senhaCriptografada);
+		} else {
+			throw new RuntimeException("A senha deve possuir entre 6 e 20 caracteres.");
+		}
+
+        return usuarioRepository.save(usuario);
      }
 
      public void remover(Integer idUsuario){
