@@ -109,12 +109,18 @@ public class UsuarioController {
         }
     }
 
+   
+
     @DeleteMapping("/id/{idUser}")
-    public String removerUser(@PathVariable Integer idUser){
-        Usuario existente = usuarioService.getUsuarioById(idUser);
-        
-        usuarioService.remover(idUser);
-        String feedback = "Usuario " + existente.getLogin() +" removido com sucesso!";
-          return feedback;
+    @Secured(value = {"ROLE_ADMIN"})
+    public String removerUser(@PathVariable Integer idUser,  Authentication authentication){
+        try {
+            Usuario existente = usuarioService.getUsuarioById(idUser);
+            usuarioService.remover(idUser, authentication);
+    
+            return "Usuario " + existente.getLogin() +" removido com sucesso!";
+        } catch (RuntimeException e) {
+            return "Erro ao deletar usuário: " + e.getMessage();
+        }
     }
 }

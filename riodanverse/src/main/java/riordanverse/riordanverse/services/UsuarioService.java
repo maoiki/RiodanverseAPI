@@ -145,8 +145,16 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
      }
 
-     public void remover(Integer idUsuario){
-          usuarioRepository.deleteById(idUsuario);
-     }
+	
+    
+
+	public void remover(Integer idUsuario, Authentication authentication){
+		Boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+		
+		if (authentication == null || !isAdmin ) {
+			throw new AccessDeniedException("Você não tem permissão para remover este usuário.");
+		}
+		usuarioRepository.deleteById(idUsuario);
+	}
     
 }
