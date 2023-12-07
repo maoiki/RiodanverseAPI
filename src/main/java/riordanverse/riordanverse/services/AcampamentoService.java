@@ -13,68 +13,68 @@ import riordanverse.riordanverse.repositories.AcampamentoRepository;
 
 @Service
 public class AcampamentoService {
-    
-    @Autowired
-    private AcampamentoRepository acampamentoRepository;
 
-    @Autowired
-    private MitologiaService mitologiaService;
-    
-    private void criarAcampamento(String nome, String mitologiaNome) {
-       
-        Acampamento existente = acampamentoRepository.findByNome(nome);
-        if(existente != null){
-            throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
-        }
+	@Autowired
+	private AcampamentoRepository acampamentoRepository;
 
-        Acampamento acampamento = new Acampamento();
-        acampamento.setNome(nome);
+	@Autowired
+	private MitologiaService mitologiaService;
 
-        Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
-        acampamento.setMitologia(mitologia);
+	private void criarAcampamento(String nome, String mitologiaNome) {
 
-       acampamentoRepository.save(acampamento);
-    }
+		Acampamento existente = acampamentoRepository.findByNome(nome);
+		if (existente != null) {
+			throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
+		}
 
-    @Transactional
-    public void criarAcampamentosIniciais(){
-       
-        if(acampamentoRepository.count() == 0){
-            criarAcampamento("meio-sangue", "greco-romana");
-            criarAcampamento("jupiter", "greco-romana");
-            criarAcampamento("casa da vida", "egipcia");
-            criarAcampamento("hotel vahalla", "nordica");
-        }
-    }
+		Acampamento acampamento = new Acampamento();
+		acampamento.setNome(nome);
 
-    public Acampamento getAcampamentoById(Integer idAcamp){
-        Optional<Acampamento> acampamento = acampamentoRepository.findById(idAcamp);
-        return acampamento.get();
-    }
+		Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
+		acampamento.setMitologia(mitologia);
 
-    public List<Acampamento> getAllAcampamentos() {
-        return acampamentoRepository.findAll();
-    }
+		acampamentoRepository.save(acampamento);
+	}
 
-    public Acampamento getAcampamentoByNome(String nome){
-        return acampamentoRepository.findByNome(nome);
-    }
+	@Transactional
+	public void criarAcampamentosIniciais() {
 
-    public List<Acampamento> getAcampamentosByMitologia(String mitologiaNome){
-        Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
-        return acampamentoRepository.findByMitologia(mitologia);
-    }
+		if (acampamentoRepository.count() == 0) {
+			criarAcampamento("meio-sangue", "greco-romana");
+			criarAcampamento("jupiter", "greco-romana");
+			criarAcampamento("casa da vida", "egipcia");
+			criarAcampamento("hotel vahalla", "nordica");
+		}
+	}
 
-    public Acampamento salvar (Acampamento acampamento){
-        return acampamentoRepository.save(acampamento);
-    }
+	public Acampamento getAcampamentoById(Integer idAcamp) {
+		Optional<Acampamento> acampamento = acampamentoRepository.findById(idAcamp);
+		return acampamento.get();
+	}
 
-   public Acampamento atualizar(Acampamento acampamento){
-        return acampamentoRepository.save(acampamento);
-    }
+	public List<Acampamento> getAllAcampamentos() {
+		return acampamentoRepository.findAll();
+	}
 
-   public void remover(Integer idAcampamento){
-        acampamentoRepository.deleteById(idAcampamento);
-    }
-    
+	public Acampamento getAcampamentoByNome(String nome) {
+		return acampamentoRepository.findByNome(nome);
+	}
+
+	public List<Acampamento> getAcampamentosByMitologia(String mitologiaNome) {
+		Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
+		return acampamentoRepository.findByMitologia(mitologia);
+	}
+
+	public Acampamento salvar(Acampamento acampamento) {
+		return acampamentoRepository.save(acampamento);
+	}
+
+	public Acampamento atualizar(Acampamento acampamento) {
+		return acampamentoRepository.save(acampamento);
+	}
+
+	public void remover(Integer idAcampamento) {
+		acampamentoRepository.deleteById(idAcampamento);
+	}
+
 }

@@ -23,124 +23,124 @@ import riordanverse.riordanverse.services.UsuarioService;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-    @Autowired
-    UsuarioService usuarioService;
+	@Autowired
+	UsuarioService usuarioService;
 
-    @GetMapping("/all")
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-    public List<Usuario> getAllUsuarios(){
-        List <Usuario> usuarios = usuarioService.getAllUsuarios();
-        return usuarios;
-    }
+	@GetMapping("/all")
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public List<Usuario> getAllUsuarios() {
+		List<Usuario> usuarios = usuarioService.getAllUsuarios();
+		return usuarios;
+	}
 
-    @GetMapping("/id/{idUsuario}")
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-    public Usuario getUsuarioById(@PathVariable Integer idUsuario){
-        Usuario usuario = usuarioService.getUsuarioById(idUsuario);
-        return usuario;
-    }
+	@GetMapping("/id/{idUsuario}")
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public Usuario getUsuarioById(@PathVariable Integer idUsuario) {
+		Usuario usuario = usuarioService.getUsuarioById(idUsuario);
+		return usuario;
+	}
 
-    @GetMapping("/login/{nomeLogin}")
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-    public Usuario getUsuarioByLogin(@PathVariable String nomeLogin){
-        Usuario usuario = usuarioService.getUsuarioByLogin(nomeLogin);
-        return usuario;
-    }
+	@GetMapping("/login/{nomeLogin}")
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public Usuario getUsuarioByLogin(@PathVariable String nomeLogin) {
+		Usuario usuario = usuarioService.getUsuarioByLogin(nomeLogin);
+		return usuario;
+	}
 
-    @GetMapping("/criatura/{nomeCriatura}")
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-    public List<Usuario> getUsuarioByCriatura(@PathVariable String nomeCriatura){
-        List<Usuario> usuarios = usuarioService.getUsuarioByCriatura(nomeCriatura);
+	@GetMapping("/criatura/{nomeCriatura}")
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public List<Usuario> getUsuarioByCriatura(@PathVariable String nomeCriatura) {
+		List<Usuario> usuarios = usuarioService.getUsuarioByCriatura(nomeCriatura);
 
-        if(usuarios.isEmpty()){
-            throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-        }
+		if (usuarios.isEmpty()) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-        return usuarios;
-    }
+		return usuarios;
+	}
 
-    @GetMapping("/acamp/{acampNome}")
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-    public List<Usuario> getUsuarioByAcampamento(@PathVariable String acampNome){
-        List<Usuario> usuarios = usuarioService.getUsuarioByAcampamento(acampNome);
-        
-        if(usuarios.isEmpty()){
-            throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-        }
+	@GetMapping("/acamp/{acampNome}")
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public List<Usuario> getUsuarioByAcampamento(@PathVariable String acampNome) {
+		List<Usuario> usuarios = usuarioService.getUsuarioByAcampamento(acampNome);
 
-        return usuarios;
-    }
+		if (usuarios.isEmpty()) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-    @GetMapping("/perfil")
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN","ROLE_CAMPISTA"})
-    public Usuario getUsuarioPerfil(Authentication authentication){
-        try {
-            Usuario usuario = usuarioService.getUsuarioByAuthentication(authentication);
-            return usuario;
-        } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter perfil do usuário", e);
-        }
-    }
+		return usuarios;
+	}
+
+	@GetMapping("/perfil")
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN", "ROLE_CAMPISTA"})
+	public Usuario getUsuarioPerfil(Authentication authentication) {
+		try {
+			Usuario usuario = usuarioService.getUsuarioByAuthentication(authentication);
+			return usuario;
+		} catch (RuntimeException e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter perfil do usuário", e);
+		}
+	}
 
 
-    @PostMapping
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-    public String cadastrarUsuario(@RequestBody Usuario usuario,  Authentication authentication){
-        try {
-            usuarioService.salvar(usuario, authentication);
-    
-            String login = usuario.getLogin();
-            return "Usuario " + login + " cadastrado com sucesso!";
-        } catch (RuntimeException e) {
-            return "Erro ao cadastrar usuário: " + e.getMessage();
-        }
-    }
+	@PostMapping
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public String cadastrarUsuario(@RequestBody Usuario usuario, Authentication authentication) {
+		try {
+			usuarioService.salvar(usuario, authentication);
 
-    @PutMapping
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-    public String atualizarUsuario(@RequestBody Usuario usuario,  Authentication authentication){
-        try {
-            usuarioService.atualizar(usuario, authentication);
-    
-            String login = usuario.getLogin();
-            return "Usuario " + login + " atualizado com sucesso!";
-        } catch (RuntimeException e) {
-            return "Erro ao atualizar usuário: " + e.getMessage();
-        }
-    }
+			String login = usuario.getLogin();
+			return "Usuario " + login + " cadastrado com sucesso!";
+		} catch (RuntimeException e) {
+			return "Erro ao cadastrar usuário: " + e.getMessage();
+		}
+	}
 
-    @PutMapping("/perfil")
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN","ROLE_CAMPISTA"})
-    public String atualizarUsuarioPerfil(@RequestBody Usuario usuario, Authentication authentication){
-        try {
-             usuarioService.atualizarSelf(usuario, authentication);
-            return "Seu usuário foi atualizado com sucesso!";
-        } catch (RuntimeException e) {
-            return "Erro ao atualizar seu usuário: " + e.getMessage();
-        }
-    }
+	@PutMapping
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public String atualizarUsuario(@RequestBody Usuario usuario, Authentication authentication) {
+		try {
+			usuarioService.atualizar(usuario, authentication);
 
-    @DeleteMapping("/perfil")
-    @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN","ROLE_CAMPISTA"})
-    public String removerUserSelf(Authentication authentication){
-        try {
-            usuarioService.removerSelf(authentication);
-            return "Seu usuário foi removido com sucesso!";
-        } catch (RuntimeException e) {
-            return "Erro ao deletar seu usuário: " + e.getMessage();
-        }
-    }
+			String login = usuario.getLogin();
+			return "Usuario " + login + " atualizado com sucesso!";
+		} catch (RuntimeException e) {
+			return "Erro ao atualizar usuário: " + e.getMessage();
+		}
+	}
 
-    @DeleteMapping("/id/{idUser}")
-    @Secured(value = {"ROLE_ADMIN"})
-    public String removerUser(@PathVariable Integer idUser,  Authentication authentication){
-        try {
-            Usuario existente = usuarioService.getUsuarioById(idUser);
-            usuarioService.remover(idUser, authentication);
-    
-            return "Usuario " + existente.getLogin() +" removido com sucesso!";
-        } catch (RuntimeException e) {
-            return "Erro ao deletar usuário: " + e.getMessage();
-        }
-    }
+	@PutMapping("/perfil")
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN", "ROLE_CAMPISTA"})
+	public String atualizarUsuarioPerfil(@RequestBody Usuario usuario, Authentication authentication) {
+		try {
+			usuarioService.atualizarSelf(usuario, authentication);
+			return "Seu usuário foi atualizado com sucesso!";
+		} catch (RuntimeException e) {
+			return "Erro ao atualizar seu usuário: " + e.getMessage();
+		}
+	}
+
+	@DeleteMapping("/perfil")
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN", "ROLE_CAMPISTA"})
+	public String removerUserSelf(Authentication authentication) {
+		try {
+			usuarioService.removerSelf(authentication);
+			return "Seu usuário foi removido com sucesso!";
+		} catch (RuntimeException e) {
+			return "Erro ao deletar seu usuário: " + e.getMessage();
+		}
+	}
+
+	@DeleteMapping("/id/{idUser}")
+	@Secured(value = {"ROLE_ADMIN"})
+	public String removerUser(@PathVariable Integer idUser, Authentication authentication) {
+		try {
+			Usuario existente = usuarioService.getUsuarioById(idUser);
+			usuarioService.remover(idUser, authentication);
+
+			return "Usuario " + existente.getLogin() + " removido com sucesso!";
+		} catch (RuntimeException e) {
+			return "Erro ao deletar usuário: " + e.getMessage();
+		}
+	}
 }

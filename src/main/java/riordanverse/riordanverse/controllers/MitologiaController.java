@@ -19,67 +19,67 @@ import riordanverse.riordanverse.services.MitologiaService;
 @RestController
 @RequestMapping("/mitologia")
 public class MitologiaController {
-     
-     @Autowired
-     MitologiaService mitologiaService;
 
-     @GetMapping("{idMitologia}")
-     public Mitologia getMitologiaById(@PathVariable Integer idMitologia){
-          Mitologia mitologia = mitologiaService.getMitologiaById(idMitologia);
-          return mitologia;
-     }
+	@Autowired
+	MitologiaService mitologiaService;
 
-     @GetMapping("/nome/{nomeMitologia}")
-     public Mitologia getMitologiaByNome(@PathVariable String nomeMitologia){
-          Mitologia mitologia = mitologiaService.getMitologiaByNome(nomeMitologia);
-          return mitologia;
-     }
+	@GetMapping("{idMitologia}")
+	public Mitologia getMitologiaById(@PathVariable Integer idMitologia) {
+		Mitologia mitologia = mitologiaService.getMitologiaById(idMitologia);
+		return mitologia;
+	}
 
-     @GetMapping("/all")
-     public List<Mitologia> getAllMitologias(){
-          List<Mitologia> mitologias = mitologiaService.getAllMitologias();
-          return mitologias;
-     }
+	@GetMapping("/nome/{nomeMitologia}")
+	public Mitologia getMitologiaByNome(@PathVariable String nomeMitologia) {
+		Mitologia mitologia = mitologiaService.getMitologiaByNome(nomeMitologia);
+		return mitologia;
+	}
 
-     @PostMapping
-     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-     public String cadastrarMitologia(@RequestBody Mitologia mitologia){
-          String nome = mitologia.getNome();
-          Mitologia existente = mitologiaService.getMitologiaByNome(nome);
+	@GetMapping("/all")
+	public List<Mitologia> getAllMitologias() {
+		List<Mitologia> mitologias = mitologiaService.getAllMitologias();
+		return mitologias;
+	}
 
-          if(existente != null){
-               throw new IllegalStateException("Já existe uma mitologia com o nome: " + nome); 
-          }
+	@PostMapping
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public String cadastrarMitologia(@RequestBody Mitologia mitologia) {
+		String nome = mitologia.getNome();
+		Mitologia existente = mitologiaService.getMitologiaByNome(nome);
 
-          mitologiaService.salvar(mitologia);
+		if (existente != null) {
+			throw new IllegalStateException("Já existe uma mitologia com o nome: " + nome);
+		}
 
-          String feedback = "Mitologia "+nome+" cadastrada com sucesso!";
-          return feedback;
-     }
+		mitologiaService.salvar(mitologia);
 
-     @PutMapping
-     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-     public String atualizarMitologia(@RequestBody Mitologia mitologia){
-          String nome = mitologia.getNome();
-          Mitologia existente = mitologiaService.getMitologiaByNome(nome);
+		String feedback = "Mitologia " + nome + " cadastrada com sucesso!";
+		return feedback;
+	}
 
-          if(existente != null){
-               throw new IllegalStateException("Já existe uma mitologia com o nome: " + nome);
-          }
+	@PutMapping
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public String atualizarMitologia(@RequestBody Mitologia mitologia) {
+		String nome = mitologia.getNome();
+		Mitologia existente = mitologiaService.getMitologiaByNome(nome);
 
-          mitologiaService.atualizar(mitologia);
-          String feedback = "Mitologia "+nome+" atualizada com sucesso!";
-          return feedback;
-     }
+		if (existente != null) {
+			throw new IllegalStateException("Já existe uma mitologia com o nome: " + nome);
+		}
 
-     @DeleteMapping("/id/{idMito}")
-     @Secured(value = {"ROLE_ADMIN"})
-     public String removerMito(@PathVariable Integer idMito){
-          Mitologia existente = mitologiaService.getMitologiaById(idMito);
+		mitologiaService.atualizar(mitologia);
+		String feedback = "Mitologia " + nome + " atualizada com sucesso!";
+		return feedback;
+	}
 
-          mitologiaService.remover(idMito);
-          String feedback = "Mitologia " + existente.getNome() +" removida com sucesso!";
-          return feedback;
-     }
+	@DeleteMapping("/id/{idMito}")
+	@Secured(value = {"ROLE_ADMIN"})
+	public String removerMito(@PathVariable Integer idMito) {
+		Mitologia existente = mitologiaService.getMitologiaById(idMito);
+
+		mitologiaService.remover(idMito);
+		String feedback = "Mitologia " + existente.getNome() + " removida com sucesso!";
+		return feedback;
+	}
 
 }

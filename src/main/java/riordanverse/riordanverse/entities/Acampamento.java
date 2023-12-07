@@ -16,21 +16,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class Acampamento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column(nullable = false)
-    private String nome;
+	@Column(nullable = false)
+	private String nome;
 
-    // Um acampamento está associado a uma única mitologia
-    @ManyToOne
-    @JoinColumn(name = "mitologia_id")
-    private Mitologia mitologia;
+	// Um acampamento está associado a uma única mitologia
+	@ManyToOne
+	@JoinColumn(name = "mitologia_id")
+	private Mitologia mitologia;
 
-    @OneToMany(mappedBy = "acampamento")
-    @JsonIgnore
-    private List<Usuario> usuarios;
+	@OneToMany(mappedBy = "acampamento")
+	@JsonIgnore
+	private List<Usuario> usuarios;
 }

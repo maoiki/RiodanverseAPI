@@ -19,82 +19,82 @@ import riordanverse.riordanverse.services.AcampamentoService;
 @RestController
 @RequestMapping("/acamp")
 public class AcampamentoController {
-     
-     @Autowired
-     AcampamentoService acampamentoService;
 
-     @GetMapping("/nome/{nomeAcampamento}")
-     public Acampamento getAcampamentoByNome(@PathVariable String nomeAcampamento){
-          Acampamento acampamento = acampamentoService.getAcampamentoByNome(nomeAcampamento);
+	@Autowired
+	AcampamentoService acampamentoService;
 
-          if(acampamento == null){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!"); 
-          }
-          return acampamento;
-     }
+	@GetMapping("/nome/{nomeAcampamento}")
+	public Acampamento getAcampamentoByNome(@PathVariable String nomeAcampamento) {
+		Acampamento acampamento = acampamentoService.getAcampamentoByNome(nomeAcampamento);
 
-     @GetMapping("/all")
-     public List<Acampamento> getAllAcampamentos(){
-          List<Acampamento> acampamentos = acampamentoService.getAllAcampamentos();
-          
-          if(acampamentos.isEmpty()){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-          }
+		if (acampamento == null) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
+		return acampamento;
+	}
 
-          return acampamentos;
-     }
+	@GetMapping("/all")
+	public List<Acampamento> getAllAcampamentos() {
+		List<Acampamento> acampamentos = acampamentoService.getAllAcampamentos();
 
-     @GetMapping("/id/{idAcamp}")
-     public Acampamento getAcampById (@PathVariable Integer idAcamp){
-          Acampamento acamp = acampamentoService.getAcampamentoById(idAcamp);
+		if (acampamentos.isEmpty()) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-          if(acamp == null){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-          }
+		return acampamentos;
+	}
 
-          return acamp;
-     }
+	@GetMapping("/id/{idAcamp}")
+	public Acampamento getAcampById(@PathVariable Integer idAcamp) {
+		Acampamento acamp = acampamentoService.getAcampamentoById(idAcamp);
 
-     @PostMapping
-     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-     public String cadastrarAcampamento(@RequestBody Acampamento acampamento){
-          String nome = acampamento.getNome();
-          Acampamento existente = acampamentoService.getAcampamentoByNome(nome);
+		if (acamp == null) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-          //Saber como faz pra aparecer a mitologia aqui
-          if(existente != null){
-               throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
-          }
+		return acamp;
+	}
 
-          acampamentoService.salvar(acampamento);
-          
-          String feedback = "Acampamento "+nome+" cadastrado com sucesso!";
-          return feedback;
-     }
+	@PostMapping
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public String cadastrarAcampamento(@RequestBody Acampamento acampamento) {
+		String nome = acampamento.getNome();
+		Acampamento existente = acampamentoService.getAcampamentoByNome(nome);
 
-     @PutMapping
-     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-     public String atualizarAcampamento(@RequestBody Acampamento acampamento){
-          String nome = acampamento.getNome();
-          Acampamento existente = acampamentoService.getAcampamentoByNome(nome);
+		//Saber como faz pra aparecer a mitologia aqui
+		if (existente != null) {
+			throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
+		}
 
-          if(existente != null){
-               throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
-          }
+		acampamentoService.salvar(acampamento);
 
-          acampamentoService.atualizar(acampamento);
-          String feedback = "Acampamento "+nome+" atualizado com sucesso!";
-          return feedback;
-     }
+		String feedback = "Acampamento " + nome + " cadastrado com sucesso!";
+		return feedback;
+	}
 
-     @DeleteMapping("/id/{idAcamp}")
-     @Secured(value = {"ROLE_ADMIN"})
-     public String removerAcamp(@PathVariable Integer idAcamp){
-          Acampamento existente = acampamentoService.getAcampamentoById(idAcamp);
+	@PutMapping
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public String atualizarAcampamento(@RequestBody Acampamento acampamento) {
+		String nome = acampamento.getNome();
+		Acampamento existente = acampamentoService.getAcampamentoByNome(nome);
 
-          acampamentoService.remover(idAcamp);
-          String feedback = "Acampamento " + existente.getNome() +" removido com sucesso!";
-          return feedback;
-     }
+		if (existente != null) {
+			throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
+		}
+
+		acampamentoService.atualizar(acampamento);
+		String feedback = "Acampamento " + nome + " atualizado com sucesso!";
+		return feedback;
+	}
+
+	@DeleteMapping("/id/{idAcamp}")
+	@Secured(value = {"ROLE_ADMIN"})
+	public String removerAcamp(@PathVariable Integer idAcamp) {
+		Acampamento existente = acampamentoService.getAcampamentoById(idAcamp);
+
+		acampamentoService.remover(idAcamp);
+		String feedback = "Acampamento " + existente.getNome() + " removido com sucesso!";
+		return feedback;
+	}
 
 }

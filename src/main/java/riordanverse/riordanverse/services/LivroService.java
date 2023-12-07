@@ -13,112 +13,112 @@ import riordanverse.riordanverse.repositories.LivroRepository;
 
 @Service
 public class LivroService {
-     
-     @Autowired
-     private LivroRepository livroRepository;
 
-     @Autowired
-     private MitologiaService mitologiaService;
+	@Autowired
+	private LivroRepository livroRepository;
 
-     private void criarLivro(String nome, Integer quantidadePaginas, Integer lancamento, String mitologiaNome) {
-          // Verifica se já existe um livro com esse nome
-          Livro existente = livroRepository.findByNome(nome);
+	@Autowired
+	private MitologiaService mitologiaService;
 
-          if (existente != null) {
-               throw new IllegalStateException("Já existe um livro com o nome: " + nome);
-          }
+	private void criarLivro(String nome, Integer quantidadePaginas, Integer lancamento, String mitologiaNome) {
+		// Verifica se já existe um livro com esse nome
+		Livro existente = livroRepository.findByNome(nome);
 
-          // Cria novo livro caso não exista algum com esse nome 
-          Livro novoLivro = new Livro();
-          novoLivro.setNome(nome);
-          novoLivro.setQuantidadePaginas(quantidadePaginas);
-          novoLivro.setLancamento(lancamento);
-          
-          Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
-          novoLivro.setMitologia(mitologia);
+		if (existente != null) {
+			throw new IllegalStateException("Já existe um livro com o nome: " + nome);
+		}
 
-          livroRepository.save(novoLivro);
-     }
-     
-     @Transactional
-     public void criarLivrosIniciais() {
-          if (livroRepository.count() == 0) {
-               // Percy Jackson e Os Olimpianos:
-               criarLivro("o ladrao de raios", 377, 2005, "greco-romana");
-               criarLivro("o mar de monstros", 279, 2006, "greco-romana");
-               criarLivro("a maldicao do tita", 312, 2007, "greco-romana");
-               criarLivro("a batalha do labirinto", 361, 2008, "greco-romana");
-               criarLivro("o ultimo olimpiano", 381, 2009, "greco-romana");
+		// Cria novo livro caso não exista algum com esse nome
+		Livro novoLivro = new Livro();
+		novoLivro.setNome(nome);
+		novoLivro.setQuantidadePaginas(quantidadePaginas);
+		novoLivro.setLancamento(lancamento);
 
-               // Heróis do Olimpo:
-               criarLivro("o heroi perdido", 553, 2010, "greco-romana");
-               criarLivro("o filho de netuno", 521, 2011, "greco-romana");
-               criarLivro("a marca de atena", 586, 2012, "greco-romana");
-               criarLivro("a casa de hades", 597, 2013, "greco-romana");
-               criarLivro("o sangue do olimpo", 516, 2014,"greco-romana");
+		Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
+		novoLivro.setMitologia(mitologia);
 
-               // As Crônicas de Kane:
-               criarLivro("a piramide vermelha", 516, 2010, "egipcia");
-               criarLivro("o trono de fogo", 452, 2011, "egipcia");
-               criarLivro("a sombra da serpente", 406, 2012, "egipcia");
+		livroRepository.save(novoLivro);
+	}
 
-               // Magnus Chase e os Deuses de Asgard:
-               criarLivro("a espada do verao", 491, 2015, "nordica");
-               criarLivro("o martelo de thor", 459, 2016, "nordica");
-               criarLivro("o navio dos mortos", 410, 2017, "nordica");
+	@Transactional
+	public void criarLivrosIniciais() {
+		if (livroRepository.count() == 0) {
+			// Percy Jackson e Os Olimpianos:
+			criarLivro("o ladrao de raios", 377, 2005, "greco-romana");
+			criarLivro("o mar de monstros", 279, 2006, "greco-romana");
+			criarLivro("a maldicao do tita", 312, 2007, "greco-romana");
+			criarLivro("a batalha do labirinto", 361, 2008, "greco-romana");
+			criarLivro("o ultimo olimpiano", 381, 2009, "greco-romana");
 
-               // As Provações de Apolo:
-               criarLivro("o oraculo oculto", 376, 2016,"greco-romana");
-               criarLivro("a profecia das trevas", 414, 2017,"greco-romana");
-               criarLivro("o labirinto de fogo", 448, 2018,"greco-romana");
-               criarLivro("a tumba do tirano", 448, 2019,"greco-romana");
-               criarLivro("a torre de nero", 516, 2020,"greco-romana");
-          }
-    }
+			// Heróis do Olimpo:
+			criarLivro("o heroi perdido", 553, 2010, "greco-romana");
+			criarLivro("o filho de netuno", 521, 2011, "greco-romana");
+			criarLivro("a marca de atena", 586, 2012, "greco-romana");
+			criarLivro("a casa de hades", 597, 2013, "greco-romana");
+			criarLivro("o sangue do olimpo", 516, 2014, "greco-romana");
 
-     public Livro getLivroById(Integer idLivro){
-          Optional<Livro> livro = livroRepository.findById(idLivro);
-          return livro.get();
- }
-    
-     public Livro getLivroByNome(String nome) {
-          return livroRepository.findByNome(nome);
-     }
-  
-     public List<Livro> getLivrosByLancamento(Integer ano) {
-          return livroRepository.findByLancamento(ano);
-     }
+			// As Crônicas de Kane:
+			criarLivro("a piramide vermelha", 516, 2010, "egipcia");
+			criarLivro("o trono de fogo", 452, 2011, "egipcia");
+			criarLivro("a sombra da serpente", 406, 2012, "egipcia");
 
-     public List<Livro> getLivrosByQuantidadePaginas(Integer quantidadePaginas) {
-          return livroRepository.findByQuantidadePaginas(quantidadePaginas);
-     }
+			// Magnus Chase e os Deuses de Asgard:
+			criarLivro("a espada do verao", 491, 2015, "nordica");
+			criarLivro("o martelo de thor", 459, 2016, "nordica");
+			criarLivro("o navio dos mortos", 410, 2017, "nordica");
 
-     public List<Livro> getLivrosByMitologia(String mitologiaNome) {
-          Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
-          return livroRepository.findByMitologia(mitologia);
-      }
+			// As Provações de Apolo:
+			criarLivro("o oraculo oculto", 376, 2016, "greco-romana");
+			criarLivro("a profecia das trevas", 414, 2017, "greco-romana");
+			criarLivro("o labirinto de fogo", 448, 2018, "greco-romana");
+			criarLivro("a tumba do tirano", 448, 2019, "greco-romana");
+			criarLivro("a torre de nero", 516, 2020, "greco-romana");
+		}
+	}
 
-     public List<Livro> getAllLivros() {
-        return livroRepository.findAll();
-    }
+	public Livro getLivroById(Integer idLivro) {
+		Optional<Livro> livro = livroRepository.findById(idLivro);
+		return livro.get();
+	}
 
-     public Livro salvar (Livro livro){
-          String titulo = livro.getNome();
-          Livro existente = livroRepository.findByNome(titulo);
+	public Livro getLivroByNome(String nome) {
+		return livroRepository.findByNome(nome);
+	}
 
-          if(existente != null){
-               throw new RuntimeException("Já existe um livro com o titulo: " + titulo); 
-          }
+	public List<Livro> getLivrosByLancamento(Integer ano) {
+		return livroRepository.findByLancamento(ano);
+	}
 
-          
-          return livroRepository.save(livro);
-     }
+	public List<Livro> getLivrosByQuantidadePaginas(Integer quantidadePaginas) {
+		return livroRepository.findByQuantidadePaginas(quantidadePaginas);
+	}
 
-     public Livro atualizar (Livro livro){
-          return livroRepository.save(livro);
-     }
+	public List<Livro> getLivrosByMitologia(String mitologiaNome) {
+		Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
+		return livroRepository.findByMitologia(mitologia);
+	}
 
-     public void remover (Integer idLivro){
-          livroRepository.deleteById(idLivro);
-     }
+	public List<Livro> getAllLivros() {
+		return livroRepository.findAll();
+	}
+
+	public Livro salvar(Livro livro) {
+		String titulo = livro.getNome();
+		Livro existente = livroRepository.findByNome(titulo);
+
+		if (existente != null) {
+			throw new RuntimeException("Já existe um livro com o titulo: " + titulo);
+		}
+
+
+		return livroRepository.save(livro);
+	}
+
+	public Livro atualizar(Livro livro) {
+		return livroRepository.save(livro);
+	}
+
+	public void remover(Integer idLivro) {
+		livroRepository.deleteById(idLivro);
+	}
 }

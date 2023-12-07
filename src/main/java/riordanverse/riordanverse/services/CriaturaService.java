@@ -13,76 +13,76 @@ import riordanverse.riordanverse.repositories.CriaturaRepository;
 
 @Service
 public class CriaturaService {
-     
-     @Autowired
-     private CriaturaRepository criaturaRepository;
 
-     @Autowired
-     private MitologiaService mitologiaService;
+	@Autowired
+	private CriaturaRepository criaturaRepository;
 
-     private void criarCriatura(String nome, String mitologiaNome){
-          //verifica se já existe uma criatura com esse nome
-          Criatura existente = criaturaRepository.findByNome(nome);
+	@Autowired
+	private MitologiaService mitologiaService;
 
-          if(existente != null){
-               throw new IllegalStateException("Já existe uma criatura com o nome: " + nome);
-          }
+	private void criarCriatura(String nome, String mitologiaNome) {
+		//verifica se já existe uma criatura com esse nome
+		Criatura existente = criaturaRepository.findByNome(nome);
 
-          //Cria nova criatura caso não exista algum com esse nome
-          Criatura novaCriatura = new Criatura();
-          novaCriatura.setNome(nome);
-          
-          Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
-          novaCriatura.setMitologia(mitologia);
+		if (existente != null) {
+			throw new IllegalStateException("Já existe uma criatura com o nome: " + nome);
+		}
 
-          criaturaRepository.save(novaCriatura);
-     }
+		//Cria nova criatura caso não exista algum com esse nome
+		Criatura novaCriatura = new Criatura();
+		novaCriatura.setNome(nome);
 
-     @Transactional
-     public void criarCriaturasIniciais(){
-          if(criaturaRepository.count()==0){
-               criarCriatura("deus greco-romano", "greco-romana");
-               criarCriatura("semideus", "greco-romana");
-               criarCriatura("sátiro", "greco-romana");
-               
-               criarCriatura("Serpopardo", "egipcia");
-               criarCriatura("Tjesu Heru", "egipcia");
-               criarCriatura("Criosfinge", "egipcia");
+		Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
+		novaCriatura.setMitologia(mitologia);
 
-               criarCriatura("Jörmungandr", "nordica");
-               criarCriatura("Draugr", "nordica");
-               criarCriatura("Troll", "nordica");
-          }
-     }
+		criaturaRepository.save(novaCriatura);
+	}
 
-     public List<Criatura> getAllCriaturas() {
-          return criaturaRepository.findAll();
-     }
+	@Transactional
+	public void criarCriaturasIniciais() {
+		if (criaturaRepository.count() == 0) {
+			criarCriatura("deus greco-romano", "greco-romana");
+			criarCriatura("semideus", "greco-romana");
+			criarCriatura("sátiro", "greco-romana");
 
-     public Criatura getCriaturaById(Integer idCriatura){
-          Optional<Criatura> criatura = criaturaRepository.findById(idCriatura);
-          return criatura.get();
-     }
+			criarCriatura("Serpopardo", "egipcia");
+			criarCriatura("Tjesu Heru", "egipcia");
+			criarCriatura("Criosfinge", "egipcia");
 
-     public Criatura getCriaturaByNome(String nome){
-          return criaturaRepository.findByNome(nome);
-     }
+			criarCriatura("Jörmungandr", "nordica");
+			criarCriatura("Draugr", "nordica");
+			criarCriatura("Troll", "nordica");
+		}
+	}
 
-     public List<Criatura> getCriaturasByMitologia(String mitologiaNome){
-          Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
-          return criaturaRepository.findByMitologia(mitologia);
-     }
+	public List<Criatura> getAllCriaturas() {
+		return criaturaRepository.findAll();
+	}
 
-     public Criatura salvar (Criatura criatura){
-          return criaturaRepository.save(criatura);
-     }
+	public Criatura getCriaturaById(Integer idCriatura) {
+		Optional<Criatura> criatura = criaturaRepository.findById(idCriatura);
+		return criatura.get();
+	}
 
-     public Criatura atualizar(Criatura criatura){
-          return criaturaRepository.save(criatura);
-     }
+	public Criatura getCriaturaByNome(String nome) {
+		return criaturaRepository.findByNome(nome);
+	}
 
-     public void remover(Integer idCriatura){
-          criaturaRepository.deleteById(idCriatura);
-     }
+	public List<Criatura> getCriaturasByMitologia(String mitologiaNome) {
+		Mitologia mitologia = mitologiaService.getMitologiaByNome(mitologiaNome);
+		return criaturaRepository.findByMitologia(mitologia);
+	}
+
+	public Criatura salvar(Criatura criatura) {
+		return criaturaRepository.save(criatura);
+	}
+
+	public Criatura atualizar(Criatura criatura) {
+		return criaturaRepository.save(criatura);
+	}
+
+	public void remover(Integer idCriatura) {
+		criaturaRepository.deleteById(idCriatura);
+	}
 
 }

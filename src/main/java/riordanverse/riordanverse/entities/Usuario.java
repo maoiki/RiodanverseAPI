@@ -14,27 +14,28 @@ import lombok.Setter;
 import riordanverse.riordanverse.enums.Funcao;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class Usuario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column(nullable = false)
-     private String login;
-     
-    @Column(nullable = false)
-    private String senha;
+	@Column(nullable = false)
+	private String login;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Funcao funcao;
+	@Column(nullable = false)
+	private String senha;
 
-    @ManyToOne
-    @JoinColumn(name = "criatura_id")
-    private Criatura criatura;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Funcao funcao;
 
-    @ManyToOne
-    @JoinColumn(name = "acampamento_id")
-    private Acampamento acampamento;
+	@ManyToOne
+	@JoinColumn(name = "criatura_id")
+	private Criatura criatura;
+
+	@ManyToOne
+	@JoinColumn(name = "acampamento_id")
+	private Acampamento acampamento;
 }

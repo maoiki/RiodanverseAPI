@@ -16,22 +16,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class Criatura {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column(nullable = false)
-    private String nome; 
+	@Column(nullable = false)
+	private String nome;
 
-    // Muitas criaturas podem estar associadas a uma mitologia
-    @ManyToOne
-    @JoinColumn(name = "mitologia_id")
-    private Mitologia mitologia;
+	// Muitas criaturas podem estar associadas a uma mitologia
+	@ManyToOne
+	@JoinColumn(name = "mitologia_id")
+	private Mitologia mitologia;
 
-    @OneToMany(mappedBy = "criatura")
-    @JsonIgnore
-    private List<Usuario> usuarios;
+	@OneToMany(mappedBy = "criatura")
+	@JsonIgnore
+	private List<Usuario> usuarios;
 
 }

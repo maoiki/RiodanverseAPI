@@ -14,26 +14,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class Mitologia {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column(nullable = false)
-    private String nome;
+	@Column(nullable = false)
+	private String nome;
 
-    // Uma mitologia está associada a diversos acampamentos
-    @OneToMany(mappedBy = "mitologia")
-    @JsonIgnore
-    private List<Acampamento> acampamentos;
+	// Uma mitologia está associada a diversos acampamentos
+	@OneToMany(mappedBy = "mitologia")
+	@JsonIgnore
+	private List<Acampamento> acampamentos;
 
-    // Uma mitologia está associada a diversos livros
-    @OneToMany(mappedBy = "mitologia")
-    @JsonIgnore
-    private List<Livro> livros;
+	// Uma mitologia está associada a diversos livros
+	@OneToMany(mappedBy = "mitologia")
+	@JsonIgnore
+	private List<Livro> livros;
 
-    @OneToMany(mappedBy = "mitologia")
-    @JsonIgnore
-    private List<Criatura> criaturas;
+	@OneToMany(mappedBy = "mitologia")
+	@JsonIgnore
+	private List<Criatura> criaturas;
 }

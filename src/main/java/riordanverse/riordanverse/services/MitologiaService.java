@@ -12,58 +12,57 @@ import riordanverse.riordanverse.repositories.MitologiaRepository;
 
 @Service
 public class MitologiaService {
-     
-     @Autowired
-     private MitologiaRepository mitologiaRepository;
 
-     private void criarMitologia(String nome) {
-        // Verifica se a mitologia com o nome já existe
-        Mitologia existente = mitologiaRepository.findByNome(nome);
-        if (existente != null) {
-            throw new IllegalStateException("Já existe uma mitologia com o nome: " + nome);
-        }
+	@Autowired
+	private MitologiaRepository mitologiaRepository;
 
-        // Cria uma nova mitologia se não existir
-        Mitologia novaMitologia = new Mitologia();
-        novaMitologia.setNome(nome);
-        mitologiaRepository.save(novaMitologia);
-     }
-     
+	private void criarMitologia(String nome) {
+		// Verifica se a mitologia com o nome já existe
+		Mitologia existente = mitologiaRepository.findByNome(nome);
+		if (existente != null) {
+			throw new IllegalStateException("Já existe uma mitologia com o nome: " + nome);
+		}
 
-     @Transactional
-     public void criarMitologiasIniciais() {
-          if (mitologiaRepository.count() == 0) {
-               criarMitologia("greco-romana");
-               criarMitologia("egipcia");
-               criarMitologia("nordica");
-          }
-     }
-     
-          public Mitologia getMitologiaById (Integer idMitologia){
-               Optional<Mitologia> mitologia = mitologiaRepository.findById(idMitologia);
-               return mitologia.get();
-          }
-     
+		// Cria uma nova mitologia se não existir
+		Mitologia novaMitologia = new Mitologia();
+		novaMitologia.setNome(nome);
+		mitologiaRepository.save(novaMitologia);
+	}
 
 
-     public Mitologia getMitologiaByNome(String nome) {
-          return mitologiaRepository.findByNome(nome);
-     }
+	@Transactional
+	public void criarMitologiasIniciais() {
+		if (mitologiaRepository.count() == 0) {
+			criarMitologia("greco-romana");
+			criarMitologia("egipcia");
+			criarMitologia("nordica");
+		}
+	}
 
-     public List<Mitologia> getAllMitologias() {
-          return mitologiaRepository.findAll();
-     }
+	public Mitologia getMitologiaById(Integer idMitologia) {
+		Optional<Mitologia> mitologia = mitologiaRepository.findById(idMitologia);
+		return mitologia.get();
+	}
 
-     public Mitologia salvar (Mitologia mitologia){
-          return mitologiaRepository.save(mitologia);
-     }
 
-     public Mitologia atualizar(Mitologia mitologia){
-          return mitologiaRepository.save(mitologia);
-     }
+	public Mitologia getMitologiaByNome(String nome) {
+		return mitologiaRepository.findByNome(nome);
+	}
 
-     public void remover(Integer idMitologia){
-          mitologiaRepository.deleteById(idMitologia);
-     }
-     
+	public List<Mitologia> getAllMitologias() {
+		return mitologiaRepository.findAll();
+	}
+
+	public Mitologia salvar(Mitologia mitologia) {
+		return mitologiaRepository.save(mitologia);
+	}
+
+	public Mitologia atualizar(Mitologia mitologia) {
+		return mitologiaRepository.save(mitologia);
+	}
+
+	public void remover(Integer idMitologia) {
+		mitologiaRepository.deleteById(idMitologia);
+	}
+
 }

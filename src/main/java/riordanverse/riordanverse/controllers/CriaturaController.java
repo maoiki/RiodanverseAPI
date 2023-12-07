@@ -19,81 +19,81 @@ import riordanverse.riordanverse.services.CriaturaService;
 @RestController
 @RequestMapping("/criatura")
 public class CriaturaController {
-     
-     @Autowired
-     CriaturaService criaturaService;
 
-     @GetMapping("/all")
-     public List<Criatura> getAllCriaturas(){
-          List<Criatura> criaturas = criaturaService.getAllCriaturas();
+	@Autowired
+	CriaturaService criaturaService;
 
-          if(criaturas.isEmpty()){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-          }
+	@GetMapping("/all")
+	public List<Criatura> getAllCriaturas() {
+		List<Criatura> criaturas = criaturaService.getAllCriaturas();
 
-          return criaturas;
-     }
+		if (criaturas.isEmpty()) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-     @GetMapping("/nome/{nomeCriatura}")
-     public Criatura getCriaturaByNome(@PathVariable String nomeCriatura){
-          Criatura criatura = criaturaService.getCriaturaByNome(nomeCriatura);
+		return criaturas;
+	}
 
-          if(criatura == null){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!"); 
-          }
-          return criatura;
-     }
+	@GetMapping("/nome/{nomeCriatura}")
+	public Criatura getCriaturaByNome(@PathVariable String nomeCriatura) {
+		Criatura criatura = criaturaService.getCriaturaByNome(nomeCriatura);
 
-     @GetMapping("/mitologia/{mitologiaCriatura}")
-     public List<Criatura> getCriaturasByMitologia (@PathVariable String mitologiaCriatura){
-          List<Criatura> criaturas = criaturaService.getCriaturasByMitologia(mitologiaCriatura);
+		if (criatura == null) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
+		return criatura;
+	}
 
-          if(criaturas.isEmpty()){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-          }
+	@GetMapping("/mitologia/{mitologiaCriatura}")
+	public List<Criatura> getCriaturasByMitologia(@PathVariable String mitologiaCriatura) {
+		List<Criatura> criaturas = criaturaService.getCriaturasByMitologia(mitologiaCriatura);
 
-          return criaturas;
-     }
+		if (criaturas.isEmpty()) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-     @PostMapping
-     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-     public String cadastrarCriatura(@RequestBody Criatura criatura){
-          String nome = criatura.getNome();
-          Criatura existente = criaturaService.getCriaturaByNome(nome);
-          //Saber como faz pra aparecer a mitologia aqui
+		return criaturas;
+	}
 
-          if(existente != null){
-               throw new IllegalStateException("Já existe uma criatura com o nome: " + nome);
-          }
+	@PostMapping
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public String cadastrarCriatura(@RequestBody Criatura criatura) {
+		String nome = criatura.getNome();
+		Criatura existente = criaturaService.getCriaturaByNome(nome);
+		//Saber como faz pra aparecer a mitologia aqui
 
-          criaturaService.salvar(criatura);
-          String feedback = "Criatura " + nome +" cadastrada com sucesso!";
-          return feedback;
-     }
+		if (existente != null) {
+			throw new IllegalStateException("Já existe uma criatura com o nome: " + nome);
+		}
 
-     @PutMapping
-     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-     public String atualizarCriatura(@RequestBody Criatura criatura){
-          String nome = criatura.getNome();
-          Criatura existente = criaturaService.getCriaturaByNome(nome);
+		criaturaService.salvar(criatura);
+		String feedback = "Criatura " + nome + " cadastrada com sucesso!";
+		return feedback;
+	}
 
-          if(existente != null){
-               throw new IllegalStateException("Já existe uma criatura com o nome: " + nome);
-          }
+	@PutMapping
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public String atualizarCriatura(@RequestBody Criatura criatura) {
+		String nome = criatura.getNome();
+		Criatura existente = criaturaService.getCriaturaByNome(nome);
 
-          criaturaService.atualizar(criatura);
-          String feedback = "Criatura " + nome +" atualizada com sucesso!";
-          return feedback;
-     }
+		if (existente != null) {
+			throw new IllegalStateException("Já existe uma criatura com o nome: " + nome);
+		}
 
-     @DeleteMapping("/id/{idCriatura}")
-     @Secured(value = {"ROLE_ADMIN"})
-     public String removerCriatura(@PathVariable Integer idCriatura){
-          Criatura existente = criaturaService.getCriaturaById(idCriatura);
+		criaturaService.atualizar(criatura);
+		String feedback = "Criatura " + nome + " atualizada com sucesso!";
+		return feedback;
+	}
 
-          criaturaService.remover(idCriatura);
-          String feedback = "Criatura " + existente.getNome() +" removida com sucesso!";
-          return feedback;
-     }
+	@DeleteMapping("/id/{idCriatura}")
+	@Secured(value = {"ROLE_ADMIN"})
+	public String removerCriatura(@PathVariable Integer idCriatura) {
+		Criatura existente = criaturaService.getCriaturaById(idCriatura);
+
+		criaturaService.remover(idCriatura);
+		String feedback = "Criatura " + existente.getNome() + " removida com sucesso!";
+		return feedback;
+	}
 
 }

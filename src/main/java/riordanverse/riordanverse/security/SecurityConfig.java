@@ -23,46 +23,46 @@ import riordanverse.riordanverse.services.UsuarioService;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-  @Autowired
-  private AuthenticationConfiguration configuration;
+	@Autowired
+	private AuthenticationConfiguration configuration;
 
-  @Autowired
-  private UsuarioService usuarioService;
+	@Autowired
+	private UsuarioService usuarioService;
 
-  // Filters
-  @Bean
-  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http
-        .cors(cors -> cors.configure(http))
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(
-            authorizeConfig -> {
-              authorizeConfig.requestMatchers(HttpMethod.POST, "/login").permitAll();
-              authorizeConfig.requestMatchers(HttpMethod.GET, "/mitologia/**").permitAll();
-              authorizeConfig.requestMatchers(HttpMethod.GET, "/livro/**").permitAll();
-              authorizeConfig.requestMatchers(HttpMethod.GET, "/acamp/**").permitAll();
-              authorizeConfig.requestMatchers(HttpMethod.GET, "/criatura/**").permitAll();
-              authorizeConfig.anyRequest().authenticated();
-            })
-        .addFilter(new JWTAuthenticationFilter(configuration.getAuthenticationManager()))
-        .addFilter(new JWTAuthorizationFilter(configuration.getAuthenticationManager(), usuarioService))
-        .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .build();
-  }
+	// Filters
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http
+				.cors(cors -> cors.configure(http))
+				.csrf(csrf -> csrf.disable())
+				.authorizeHttpRequests(
+						authorizeConfig -> {
+							authorizeConfig.requestMatchers(HttpMethod.POST, "/login").permitAll();
+							authorizeConfig.requestMatchers(HttpMethod.GET, "/mitologia/**").permitAll();
+							authorizeConfig.requestMatchers(HttpMethod.GET, "/livro/**").permitAll();
+							authorizeConfig.requestMatchers(HttpMethod.GET, "/acamp/**").permitAll();
+							authorizeConfig.requestMatchers(HttpMethod.GET, "/criatura/**").permitAll();
+							authorizeConfig.anyRequest().authenticated();
+						})
+				.addFilter(new JWTAuthenticationFilter(configuration.getAuthenticationManager()))
+				.addFilter(new JWTAuthorizationFilter(configuration.getAuthenticationManager(), usuarioService))
+				.sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.build();
+	}
 
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-    configuration.setAllowCredentials(true);
-    configuration.setExposedHeaders(Arrays.asList("fresh-token"));
-    configuration.setAllowedHeaders(Arrays.asList("content-type", "authorization"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+		configuration.setAllowCredentials(true);
+		configuration.setExposedHeaders(Arrays.asList("fresh-token"));
+		configuration.setAllowedHeaders(Arrays.asList("content-type", "authorization"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
 
-    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
 
-    return source;
-  }
+		return source;
+	}
 
 }

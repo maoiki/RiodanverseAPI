@@ -11,26 +11,25 @@ import riordanverse.riordanverse.services.MitologiaService;
 
 @Component
 public class InicializacaoDeDados {
-    private final MitologiaService mitologiaService;
-    private final AcampamentoService acampamentoService;
-    private final LivroService livroService;
-    private final CriaturaService criaturaService;
+	private final MitologiaService mitologiaService;
+	private final AcampamentoService acampamentoService;
+	private final LivroService livroService;
+	private final CriaturaService criaturaService;
 
-    @Autowired
-    public InicializacaoDeDados(MitologiaService mitologiaService, AcampamentoService acampamentoService, LivroService livroService, CriaturaService criaturaService) {
-        this.mitologiaService = mitologiaService;
-        this.acampamentoService = acampamentoService;
-        this.livroService = livroService;
-        this.criaturaService = criaturaService;
-    }
+	@Autowired
+	public InicializacaoDeDados(MitologiaService mitologiaService, AcampamentoService acampamentoService, LivroService livroService, CriaturaService criaturaService) {
+		this.mitologiaService = mitologiaService;
+		this.acampamentoService = acampamentoService;
+		this.livroService = livroService;
+		this.criaturaService = criaturaService;
+	}
 
-    
 
-    @PostConstruct
-    public void inicializarDados() {
-        mitologiaService.criarMitologiasIniciais();
-        acampamentoService.criarAcampamentosIniciais();
-        livroService.criarLivrosIniciais();
-        criaturaService.criarCriaturasIniciais();
-    }
+	@PostConstruct
+	public void inicializarDados() {
+		mitologiaService.criarMitologiasIniciais();
+		acampamentoService.criarAcampamentosIniciais();
+		livroService.criarLivrosIniciais();
+		criaturaService.criarCriaturasIniciais();
+	}
 }

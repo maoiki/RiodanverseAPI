@@ -15,16 +15,16 @@ import riordanverse.riordanverse.services.UsuarioService;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UsuarioService usuarioService;
+	@Autowired
+	private UsuarioService usuarioService;
 
-    @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        Usuario usuario = usuarioService.getUsuarioByLogin(login);
-        if (usuario == null) {
-            throw new UsernameNotFoundException(login);
-        }
-        return new User(usuario.getLogin(), usuario.getSenha(), emptyList());
-    }
+	@Override
+	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+		Usuario usuario = usuarioService.getUsuarioByLogin(login);
+		if (usuario == null) {
+			throw new UsernameNotFoundException(login);
+		}
+		return new User(usuario.getLogin(), usuario.getSenha(), emptyList());
+	}
 
 }

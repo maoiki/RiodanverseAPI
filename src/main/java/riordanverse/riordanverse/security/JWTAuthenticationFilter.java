@@ -20,59 +20,59 @@ import jakarta.servlet.http.HttpServletResponse;
 import riordanverse.riordanverse.entities.Usuario;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-  private AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 
-  public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
-    this.authenticationManager = authenticationManager;
-  }
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+		this.authenticationManager = authenticationManager;
+	}
 
-  @Override
-  public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-      throws AuthenticationException {
-    try {
-      Usuario usuario = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException {
+		try {
+			Usuario usuario = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
 
-      return authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(
-              usuario.getLogin(),
-              usuario.getSenha(),
-              Collections.emptyList()));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
+			return authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(
+							usuario.getLogin(),
+							usuario.getSenha(),
+							Collections.emptyList()));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-  @Override
-  protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-      Authentication auth) throws IOException, ServletException {
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+											Authentication auth) throws IOException, ServletException {
 
-    response.setHeader("Content-Type", "application/json; charset=UTF-8");
-    response.setCharacterEncoding("UTF-8");
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
 
-    try {
+		try {
 
-      String login = ((User)auth.getPrincipal()).getUsername();
+			String login = ((User) auth.getPrincipal()).getUsername();
 
-      String token = TokenUtil.getToken(login);
+			String token = TokenUtil.getToken(login);
 
-      String json = String.format("{\"token\": \"%s\" }", token);
+			String json = String.format("{\"token\": \"%s\" }", token);
 
-      response.getWriter().write(json);
+			response.getWriter().write(json);
 
-    } catch (Exception e) {
-      response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-      String json = String.format("{ \"msg\" : \"%s\" }", e.getMessage());
-      response.getWriter().write(json);
-    }
-  }
+		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			String json = String.format("{ \"msg\" : \"%s\" }", e.getMessage());
+			response.getWriter().write(json);
+		}
+	}
 
-  @Override
-  protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-      AuthenticationException failed) throws IOException, ServletException {
-    response.setHeader("Content-Type", "application/json; charset=UTF-8");
-    response.setCharacterEncoding("UTF-8");
-    response.setStatus(Response.SC_UNAUTHORIZED);
-    String json = "{ \"msg\" : \"Erro: login ou senha inválidos\" }";
-    response.getWriter().write(json);
-  }
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+											  AuthenticationException failed) throws IOException, ServletException {
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setStatus(Response.SC_UNAUTHORIZED);
+		String json = "{ \"msg\" : \"Erro: login ou senha inválidos\" }";
+		response.getWriter().write(json);
+	}
 }

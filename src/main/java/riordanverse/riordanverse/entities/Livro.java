@@ -11,23 +11,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class Livro {
-     @Id
-     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-     @Column(nullable = false)
-     private String nome;
+	@Column(nullable = false)
+	private String nome;
 
-     @Column(nullable = false)
-     private Integer quantidadePaginas;
+	@Column(nullable = false)
+	private Integer quantidadePaginas;
 
-     @Column(nullable = false)
-     private Integer lancamento;
+	@Column(nullable = false)
+	private Integer lancamento;
 
-     // Muitos livros podem estar associados a uma mitologia
-     @ManyToOne
-     @JoinColumn(name = "mitologia_id")
-     private Mitologia mitologia;
+	// Muitos livros podem estar associados a uma mitologia
+	@ManyToOne
+	@JoinColumn(name = "mitologia_id")
+	private Mitologia mitologia;
 }

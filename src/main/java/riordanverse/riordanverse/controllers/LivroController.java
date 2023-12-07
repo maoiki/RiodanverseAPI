@@ -19,112 +19,112 @@ import riordanverse.riordanverse.services.LivroService;
 @RestController
 @RequestMapping("/livro")
 public class LivroController {
-     
-     @Autowired
-     LivroService livroService;
 
-     @GetMapping("/id/{idLivro}")
-     public Livro getLivroById(@PathVariable Integer idLivro){
-          Livro livro = livroService.getLivroById(idLivro);
-          
-          if(livro == null){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-          }
+	@Autowired
+	LivroService livroService;
 
-          return livro;
-     }
+	@GetMapping("/id/{idLivro}")
+	public Livro getLivroById(@PathVariable Integer idLivro) {
+		Livro livro = livroService.getLivroById(idLivro);
 
-     @GetMapping("/nome/{nomeLivro}")
-     public Livro getLivroByNome(@PathVariable String nomeLivro){
-          Livro livro = livroService.getLivroByNome(nomeLivro);
-          
-          if(livro == null){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-          }
+		if (livro == null) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-          return livro;
-     }
+		return livro;
+	}
 
-     @GetMapping("/lancamento/{lancamentoLivro}")
-     public List<Livro> getLivroByLancamento(@PathVariable Integer lancamentoLivro){
-          List<Livro> livros = livroService.getLivrosByLancamento(lancamentoLivro);
+	@GetMapping("/nome/{nomeLivro}")
+	public Livro getLivroByNome(@PathVariable String nomeLivro) {
+		Livro livro = livroService.getLivroByNome(nomeLivro);
 
-          if(livros.isEmpty()){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-          }
+		if (livro == null) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-          return livros;
-     }
+		return livro;
+	}
 
-     @GetMapping("/paginas/{pagsLivro}")
-     public List<Livro> getLivroByQuantidadePaginas(@PathVariable Integer pagsLivro){
-          List<Livro> livros = livroService.getLivrosByQuantidadePaginas(pagsLivro);
-          
-          if(livros.isEmpty()){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-          }
+	@GetMapping("/lancamento/{lancamentoLivro}")
+	public List<Livro> getLivroByLancamento(@PathVariable Integer lancamentoLivro) {
+		List<Livro> livros = livroService.getLivrosByLancamento(lancamentoLivro);
 
-          return livros;
-     }
+		if (livros.isEmpty()) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-     @GetMapping("/mitologia/{mitologiaLivro}")
-     public List<Livro> getLivroByMitologia(@PathVariable String mitologiaLivro){
-          List<Livro> livros = livroService.getLivrosByMitologia(mitologiaLivro);
+		return livros;
+	}
 
-          if(livros.isEmpty()){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-          }
+	@GetMapping("/paginas/{pagsLivro}")
+	public List<Livro> getLivroByQuantidadePaginas(@PathVariable Integer pagsLivro) {
+		List<Livro> livros = livroService.getLivrosByQuantidadePaginas(pagsLivro);
 
-          return livros;
-     }
+		if (livros.isEmpty()) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-     @GetMapping("/all")
-     public List<Livro> getAllLivros(){
-          List<Livro> livros = livroService.getAllLivros();
+		return livros;
+	}
 
-          if(livros.isEmpty()){
-               throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
-          }
+	@GetMapping("/mitologia/{mitologiaLivro}")
+	public List<Livro> getLivroByMitologia(@PathVariable String mitologiaLivro) {
+		List<Livro> livros = livroService.getLivrosByMitologia(mitologiaLivro);
 
-          return livros;
-     }
+		if (livros.isEmpty()) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-     @PostMapping
-     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-     public String cadastrarLivro(@RequestBody Livro livro){
-          try{
-               livroService.salvar(livro);
+		return livros;
+	}
 
-               String nome = livro.getNome();
-               return "Livro " + nome + " cadastrado com sucesso!";
-          }catch (RuntimeException e) {
-               return "Erro ao cadastrar livro: " + e.getMessage();
-           }
-     }
+	@GetMapping("/all")
+	public List<Livro> getAllLivros() {
+		List<Livro> livros = livroService.getAllLivros();
 
-     @PutMapping
-     @Secured(value = {"ROLE_FUNCIONARIO","ROLE_ADMIN"})
-     public String atualizarLivro(@RequestBody Livro livro){
-          String nome = livro.getNome();
-          Livro existente = livroService.getLivroByNome(nome);
+		if (livros.isEmpty()) {
+			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+		}
 
-          if (existente != null) {
-               throw new IllegalStateException("Já existe um livro com o nome: " + nome);
-          }
-          
-          livroService.atualizar(livro);
-          String feedback = "Livro " + nome +" atualizado com sucesso!";
-          return feedback;
-     }
+		return livros;
+	}
 
-     @DeleteMapping("/id/{idLivro}")
-     @Secured(value = {"ROLE_ADMIN"}) 
-     public String removerLivro(@PathVariable Integer idLivro){
-          Livro existente = livroService.getLivroById(idLivro);
+	@PostMapping
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public String cadastrarLivro(@RequestBody Livro livro) {
+		try {
+			livroService.salvar(livro);
 
-          livroService.remover(idLivro);
-          String feedback = "Livro " + existente.getNome() +" removido com sucesso!";
-          return feedback;
-     }
+			String nome = livro.getNome();
+			return "Livro " + nome + " cadastrado com sucesso!";
+		} catch (RuntimeException e) {
+			return "Erro ao cadastrar livro: " + e.getMessage();
+		}
+	}
+
+	@PutMapping
+	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
+	public String atualizarLivro(@RequestBody Livro livro) {
+		String nome = livro.getNome();
+		Livro existente = livroService.getLivroByNome(nome);
+
+		if (existente != null) {
+			throw new IllegalStateException("Já existe um livro com o nome: " + nome);
+		}
+
+		livroService.atualizar(livro);
+		String feedback = "Livro " + nome + " atualizado com sucesso!";
+		return feedback;
+	}
+
+	@DeleteMapping("/id/{idLivro}")
+	@Secured(value = {"ROLE_ADMIN"})
+	public String removerLivro(@PathVariable Integer idLivro) {
+		Livro existente = livroService.getLivroById(idLivro);
+
+		livroService.remover(idLivro);
+		String feedback = "Livro " + existente.getNome() + " removido com sucesso!";
+		return feedback;
+	}
 
 }
