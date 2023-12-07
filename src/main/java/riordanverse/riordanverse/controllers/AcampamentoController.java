@@ -61,7 +61,6 @@ public class AcampamentoController {
 		String nome = acampamento.getNome();
 		Acampamento existente = acampamentoService.getAcampamentoByNome(nome);
 
-		//Saber como faz pra aparecer a mitologia aqui
 		if (existente != null) {
 			throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
 		}

@@ -26,7 +26,6 @@ public class Acampamento {
 	@Column(nullable = false)
 	private String nome;
 
-	// Um acampamento está associado a uma única mitologia
 	@ManyToOne
 	@JoinColumn(name = "mitologia_id")
 	private Mitologia mitologia;

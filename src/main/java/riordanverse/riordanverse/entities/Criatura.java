@@ -26,7 +26,6 @@ public class Criatura {
 	@Column(nullable = false)
 	private String nome;
 
-	// Muitas criaturas podem estar associadas a uma mitologia
 	@ManyToOne
 	@JoinColumn(name = "mitologia_id")
 	private Mitologia mitologia;

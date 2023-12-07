@@ -60,7 +60,6 @@ public class CriaturaController {
 	public String cadastrarCriatura(@RequestBody Criatura criatura) {
 		String nome = criatura.getNome();
 		Criatura existente = criaturaService.getCriaturaByNome(nome);
-		//Saber como faz pra aparecer a mitologia aqui
 
 		if (existente != null) {
 			throw new IllegalStateException("Já existe uma criatura com o nome: " + nome);

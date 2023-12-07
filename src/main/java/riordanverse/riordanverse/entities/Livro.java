@@ -27,7 +27,6 @@ public class Livro {
 	@Column(nullable = false)
 	private Integer lancamento;
 
-	// Muitos livros podem estar associados a uma mitologia
 	@ManyToOne
 	@JoinColumn(name = "mitologia_id")
 	private Mitologia mitologia;

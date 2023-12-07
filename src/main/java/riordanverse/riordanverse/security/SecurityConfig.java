@@ -29,7 +29,6 @@ public class SecurityConfig {
 	@Autowired
 	private UsuarioService usuarioService;
 
-	// Filters
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http

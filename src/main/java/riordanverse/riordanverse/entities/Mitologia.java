@@ -24,12 +24,10 @@ public class Mitologia {
 	@Column(nullable = false)
 	private String nome;
 
-	// Uma mitologia está associada a diversos acampamentos
 	@OneToMany(mappedBy = "mitologia")
 	@JsonIgnore
 	private List<Acampamento> acampamentos;
 
-	// Uma mitologia está associada a diversos livros
 	@OneToMany(mappedBy = "mitologia")
 	@JsonIgnore
 	private List<Livro> livros;
