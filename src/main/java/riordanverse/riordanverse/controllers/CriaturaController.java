@@ -1,6 +1,7 @@
 package riordanverse.riordanverse.controllers;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -28,7 +29,7 @@ public class CriaturaController {
 		List<Criatura> criaturas = criaturaService.getAllCriaturas();
 
 		if (criaturas.isEmpty()) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return criaturas;
@@ -39,7 +40,7 @@ public class CriaturaController {
 		Criatura criatura = criaturaService.getCriaturaByNome(nomeCriatura);
 
 		if (criatura == null) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 		return criatura;
 	}
@@ -49,7 +50,7 @@ public class CriaturaController {
 		List<Criatura> criaturas = criaturaService.getCriaturasByMitologia(mitologiaCriatura);
 
 		if (criaturas.isEmpty()) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return criaturas;
@@ -62,7 +63,7 @@ public class CriaturaController {
 		Criatura existente = criaturaService.getCriaturaByNome(nome);
 
 		if (existente != null) {
-			throw new IllegalStateException("Já existe uma criatura com o nome: " + nome);
+			throw new IllegalArgumentException("Já existe uma criatura com o nome: " + nome);
 		}
 
 		criaturaService.salvar(criatura);
@@ -77,7 +78,7 @@ public class CriaturaController {
 		Criatura existente = criaturaService.getCriaturaByNome(nome);
 
 		if (existente != null) {
-			throw new IllegalStateException("Já existe uma criatura com o nome: " + nome);
+			throw new IllegalArgumentException("Já existe uma criatura com o nome: " + nome);
 		}
 
 		criaturaService.atualizar(criatura);

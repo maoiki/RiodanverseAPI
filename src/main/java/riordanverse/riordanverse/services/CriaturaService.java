@@ -25,7 +25,7 @@ public class CriaturaService {
 		Criatura existente = criaturaRepository.findByNome(nome);
 
 		if (existente != null) {
-			throw new IllegalStateException("Já existe uma criatura com o nome: " + nome);
+			throw new IllegalArgumentException("Já existe uma criatura com o nome: " + nome);
 		}
 
 		//Cria nova criatura caso não exista algum com esse nome

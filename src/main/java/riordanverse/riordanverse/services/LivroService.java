@@ -25,7 +25,7 @@ public class LivroService {
 		Livro existente = livroRepository.findByNome(nome);
 
 		if (existente != null) {
-			throw new IllegalStateException("Já existe um livro com o nome: " + nome);
+			throw new IllegalArgumentException("Já existe um livro com o nome: " + nome);
 		}
 
 		// Cria novo livro caso não exista algum com esse nome

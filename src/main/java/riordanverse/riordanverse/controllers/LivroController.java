@@ -1,6 +1,7 @@
 package riordanverse.riordanverse.controllers;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -28,7 +29,7 @@ public class LivroController {
 		Livro livro = livroService.getLivroById(idLivro);
 
 		if (livro == null) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return livro;
@@ -39,7 +40,7 @@ public class LivroController {
 		Livro livro = livroService.getLivroByNome(nomeLivro);
 
 		if (livro == null) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return livro;
@@ -50,7 +51,7 @@ public class LivroController {
 		List<Livro> livros = livroService.getLivrosByLancamento(lancamentoLivro);
 
 		if (livros.isEmpty()) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return livros;
@@ -61,7 +62,7 @@ public class LivroController {
 		List<Livro> livros = livroService.getLivrosByQuantidadePaginas(pagsLivro);
 
 		if (livros.isEmpty()) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return livros;
@@ -72,7 +73,7 @@ public class LivroController {
 		List<Livro> livros = livroService.getLivrosByMitologia(mitologiaLivro);
 
 		if (livros.isEmpty()) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return livros;
@@ -83,7 +84,7 @@ public class LivroController {
 		List<Livro> livros = livroService.getAllLivros();
 
 		if (livros.isEmpty()) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return livros;
@@ -109,7 +110,7 @@ public class LivroController {
 		Livro existente = livroService.getLivroByNome(nome);
 
 		if (existente != null) {
-			throw new IllegalStateException("Já existe um livro com o nome: " + nome);
+			throw new IllegalArgumentException("Já existe um livro com o nome: " + nome);
 		}
 
 		livroService.atualizar(livro);

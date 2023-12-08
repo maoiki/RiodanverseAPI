@@ -24,7 +24,7 @@ public class AcampamentoService {
 
 		Acampamento existente = acampamentoRepository.findByNome(nome);
 		if (existente != null) {
-			throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
+			throw new IllegalArgumentException("Já existe um acampamento com o nome: " + nome);
 		}
 
 		Acampamento acampamento = new Acampamento();

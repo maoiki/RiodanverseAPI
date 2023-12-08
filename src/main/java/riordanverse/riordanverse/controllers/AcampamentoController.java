@@ -1,6 +1,7 @@
 package riordanverse.riordanverse.controllers;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -28,7 +29,7 @@ public class AcampamentoController {
 		Acampamento acampamento = acampamentoService.getAcampamentoByNome(nomeAcampamento);
 
 		if (acampamento == null) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 		return acampamento;
 	}
@@ -38,7 +39,7 @@ public class AcampamentoController {
 		List<Acampamento> acampamentos = acampamentoService.getAllAcampamentos();
 
 		if (acampamentos.isEmpty()) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return acampamentos;
@@ -49,7 +50,7 @@ public class AcampamentoController {
 		Acampamento acamp = acampamentoService.getAcampamentoById(idAcamp);
 
 		if (acamp == null) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return acamp;
@@ -62,7 +63,7 @@ public class AcampamentoController {
 		Acampamento existente = acampamentoService.getAcampamentoByNome(nome);
 
 		if (existente != null) {
-			throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
+			throw new IllegalArgumentException("Já existe um acampamento com o nome: " + nome);
 		}
 
 		acampamentoService.salvar(acampamento);
@@ -78,7 +79,7 @@ public class AcampamentoController {
 		Acampamento existente = acampamentoService.getAcampamentoByNome(nome);
 
 		if (existente != null) {
-			throw new IllegalStateException("Já existe um acampamento com o nome: " + nome);
+			throw new IllegalArgumentException("Já existe um acampamento com o nome: " + nome);
 		}
 
 		acampamentoService.atualizar(acampamento);

@@ -1,6 +1,7 @@
 package riordanverse.riordanverse.controllers;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,7 +54,7 @@ public class UsuarioController {
 		List<Usuario> usuarios = usuarioService.getUsuarioByCriatura(nomeCriatura);
 
 		if (usuarios.isEmpty()) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return usuarios;
@@ -65,7 +66,7 @@ public class UsuarioController {
 		List<Usuario> usuarios = usuarioService.getUsuarioByAcampamento(acampNome);
 
 		if (usuarios.isEmpty()) {
-			throw new IllegalStateException("Não foram encontrados resultados para essa busca!");
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
 		}
 
 		return usuarios;
