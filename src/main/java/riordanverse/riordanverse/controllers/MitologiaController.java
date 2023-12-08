@@ -1,6 +1,7 @@
 package riordanverse.riordanverse.controllers;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -26,60 +27,73 @@ public class MitologiaController {
 	@GetMapping("{idMitologia}")
 	public Mitologia getMitologiaById(@PathVariable Integer idMitologia) {
 		Mitologia mitologia = mitologiaService.getMitologiaById(idMitologia);
+
+		if(mitologia == null){
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
+		}
+		
 		return mitologia;
 	}
 
 	@GetMapping("/nome/{nomeMitologia}")
 	public Mitologia getMitologiaByNome(@PathVariable String nomeMitologia) {
 		Mitologia mitologia = mitologiaService.getMitologiaByNome(nomeMitologia);
+
+		if(mitologia == null){
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
+		}
+
 		return mitologia;
 	}
 
 	@GetMapping("/all")
 	public List<Mitologia> getAllMitologias() {
 		List<Mitologia> mitologias = mitologiaService.getAllMitologias();
+
+		if(mitologias.isEmpty()){
+			throw new NoSuchElementException("Não foram encontrados resultados para essa busca!");
+		}
+
 		return mitologias;
 	}
 
 	@PostMapping
 	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
 	public String cadastrarMitologia(@RequestBody Mitologia mitologia) {
-		String nome = mitologia.getNome();
-		Mitologia existente = mitologiaService.getMitologiaByNome(nome);
+		try {
+			mitologiaService.salvar(mitologia);
 
-		if (existente != null) {
-			throw new IllegalStateException("Já existe uma mitologia com o nome: " + nome);
+			String nome = mitologia.getNome();
+			return "Mitologia " + nome + " cadastrada com sucesso!";
+		} catch (RuntimeException e) {
+			return "Erro ao cadastrar mitologia: " + e.getMessage();
 		}
-
-		mitologiaService.salvar(mitologia);
-
-		String feedback = "Mitologia " + nome + " cadastrada com sucesso!";
-		return feedback;
 	}
 
 	@PutMapping
 	@Secured(value = {"ROLE_FUNCIONARIO", "ROLE_ADMIN"})
 	public String atualizarMitologia(@RequestBody Mitologia mitologia) {
-		String nome = mitologia.getNome();
-		Mitologia existente = mitologiaService.getMitologiaByNome(nome);
+		try {
+			mitologiaService.atualizar(mitologia);
 
-		if (existente != null) {
-			throw new IllegalStateException("Já existe uma mitologia com o nome: " + nome);
+			String nome = mitologia.getNome();
+			return "Mitologia " + nome + " atualizada com sucesso!";
+		} catch (RuntimeException e) {
+			return "Erro ao atualizar mitologia: " + e.getMessage();
 		}
-
-		mitologiaService.atualizar(mitologia);
-		String feedback = "Mitologia " + nome + " atualizada com sucesso!";
-		return feedback;
 	}
 
 	@DeleteMapping("/id/{idMito}")
 	@Secured(value = {"ROLE_ADMIN"})
 	public String removerMito(@PathVariable Integer idMito) {
-		Mitologia existente = mitologiaService.getMitologiaById(idMito);
-
-		mitologiaService.remover(idMito);
-		String feedback = "Mitologia " + existente.getNome() + " removida com sucesso!";
-		return feedback;
+		try {
+			mitologiaService.remover(idMito);
+			
+			Mitologia mitologia = mitologiaService.getMitologiaById(idMito);
+			return "Mitologia " + mitologia.getNome() + " removida com sucesso!";
+		} catch (RuntimeException e) {
+			return "Erro ao deletar usuário: " + e.getMessage();
+		}
 	}
 
 }
