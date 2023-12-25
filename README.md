@@ -1,44 +1,90 @@
 # RiordanverseAPI
 
-## Descrição
-Projeto realizado na conclusão da matéria de Desenvolvimento de Sistemas para Internet, ministrada pelo professor [Igor Rosberg de Medeiros Silva](https://github.com/igorosberg), e programado por [Bruno Cesar](https://github.com/brunoo85) e [Julio Augusto](https://github.com/maoiki).
+Projeto desenvolvido como parte da disciplina Desenvolvimento de Sistemas para Internet. Os autores principais deste projeto foram:
 
-[Editar tamanho da imagem, tá muito pequena]: # 
- <img src=".\riodanverse\assets\fotoLivros.jpg" width="500" height="300">
+- [Bruno Cesar](https://github.com/brunoo85)
+- [Julio Duarte](https://github.com/maoiki)
+
+## Descrição
+A RiordanverseAPI tem como objetivo permitir o registro e consulta de informações relacionadas aos livros, mitologias, acampamentos e criaturas do universo literário criado por Rick Riordan. 
+Nela é possível também cadastrar os fãs como usuários, onde estes podem se associar a um acampamento e também assumir um papel nele.
+
+## Tecnologias e ferramentas utilizadas
+- Java
+- SpringBoot
+- Hibernate
+- Java JWT
+- MySQL
+- Bcrypt
 
 ## Tabelas
 Foram usadas 5 tabelas para a composição dessa API. São elas: Usuário, Acampamento, Mitologia, Criatura e Livro. 
+A relação entre as entidades dessas tabelas pode ser observada no diagrama a seguir:
 
-## Relações entre tabelas
-As tabelas são organizadas da seguinte forma: 
+<img src=".\assets\relacaoentidades.jpg">
 
-O **Livro** possui suas características e possui uma **Mitologia**
+## Autenticação
+A RiordanverseAPI utiliza JWT (JSON Web Token) para autenticação. 
+Para obter um token JWT e autenticar suas solicitações, você deve realizar o seguinte procedimento:
 
-Uma **Mitologia** possui seu nome e é ligada a um **Acampamento**
+1. **Solicitar Token:**
+    
+    Envie uma solicitação para o endpoint de autenticação, fornecendo suas credenciais.
+    
+    Exemplo de solicitação:
+     ```http
+     POST localhost:8080/login
+     Content-Type: application/json
 
-Um **Acampamento** possui uma **Mitologia**
+     {
+       "login": "seu_login",
+       "senha": "sua_senha"
+     }
+     ```
+    
+    Exemplo de resposta bem-sucedida:
+     ```json
+     {
+       "token": "seu_token_jwt_aqui"
+     }
+     ```
 
-Uma **Criatura** possui uma **Mitologia** associada a ela
+2. **Incluir Token nas Solicitações:**
 
-O **Usuário** possui um **Acampamento** e uma **Criatura** associado a ele
+    Inclua o token JWT nas solicitações autenticadas no cabeçalho `Authorization`.
+
+    Exemplo:
+    ```http
+    GET localhost:8080/livro/id/1
+    Authorization: Bearer seu_token_jwt_aqui
+    ```
 
 ## Segurança
+Para garantir a integridade da senha dos usuários, foi utilizada criptografia do tipo hash.
 
-A segurança é feita com 3 modos de usuário: 
-Administrador, funcionário e campista.
+A segurança das rotas foi desenvolvida para permitir fácil acesso a consulta dados não sensíveis, por meio de rotas públicas. 
+Já para alterar dados ou consultar usuários, são utilizadas rotas privadas que requerem autenticação.
 
-Com alguns métodos sendo acessados por pessoas que não possuem login. 
+### Rotas públicas
+São públicas as rotas de Login, Acampamento, Mitologia, Livros e Criaturas utilizando o método GET.
 
-Ficou organizado da seguinte forma: 
+Exemplos:
 
-- Público (sem login):<br>
-Todos os gets, com excessão dos relacionado ao Usuário.
+```http
+GET localhost:8080/login
+GET localhost:8080/mitologia/all
+GET localhost:8080/criatura/nome/semideus
+```
 
-- Campista:<br>
-Get e put do usuário cadastrado.
+### Rotas privadas
+O usuário autenticado pode ter 3 funções: administrador, funcionário e campista. 
+Na tabela a seguir é possível ver quais as permissões e restrições de cada método:
 
-- Para o funcionário e administrador:<br>
-Todos os puts e deletes (exceto o put de um usuário adm).
+| Função       | POST   | PUT     | DELETE |
+| ---          | ---    | ---     | ---    |
+| Administrador| ✅     | ✅     | ✅     |
+| Funcionário  | ✅[^1] | ✅[^1] | ❌[^2] |
+| Campista     | ❌     | ❌[^2] | ❌[^2] |
 
-- Público (sem login):<br>
-Todos os deletes e o put de um usuário adm.
+[^1]: Não possui permissão para alterar a função de um usuário para administrador ou funcionário.
+[^2]: Todos os usuários podem utilizar GET, PUT e DELETE referentes a própria conta.
