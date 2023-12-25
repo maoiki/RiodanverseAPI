@@ -24,7 +24,7 @@ public class MitologiaController {
 	@Autowired
 	MitologiaService mitologiaService;
 
-	@GetMapping("{idMitologia}")
+	@GetMapping("/id/{idMitologia}")
 	public Mitologia getMitologiaById(@PathVariable Integer idMitologia) {
 		Mitologia mitologia = mitologiaService.getMitologiaById(idMitologia);
 
